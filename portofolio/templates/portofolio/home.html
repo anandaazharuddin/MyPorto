@@ -14,6 +14,10 @@
             <feGaussianBlur in="noise" stdDeviation="2.2" result="blurredNoise"></feGaussianBlur>
             <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
         </filter>
+        <filter id="socialLensFilter" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+            <feImage id="socialLensMapImage" x="0" y="0" width="100%" height="100%" result="map" preserveAspectRatio="none"></feImage>
+            <feDisplacementMap id="socialLensDisplacementMap" in="SourceGraphic" in2="map" scale="16" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        </filter>
     </svg>
     <div class="bg-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <div class="welcome-overlay" id="welcomeOverlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
@@ -424,53 +428,91 @@
     </script>
     <script>
         // Liquid-glass draggable selection indicator over the social cards
-        // (LinkedIn / Instagram / GitHub / TikTok). The glass pane matches
-        // each card's exact size and position (no blur — fully transparent,
-        // so the card underneath stays readable), starts on the first card,
-        // can be dragged, and always springs to the nearest card on release.
+        // (LinkedIn / Instagram / GitHub / TikTok). Instead of cloning each
+        // card's icon+label into the thumb, the thumb uses real backdrop
+        // refraction (feDisplacementMap) so the card underneath is read
+        // live through the glass, and its border-radius always matches the
+        // card's own radius so no corner ever shows through.
         (function () {
             const grid = document.querySelector('.social-grid');
             const thumb = document.getElementById('socialSelectThumb');
-            if (!grid || !thumb) return;
+            const mapImage = document.getElementById('socialLensMapImage');
+            if (!grid || !thumb || !mapImage) return;
             const tiles = [...grid.querySelectorAll(':scope > a.social-tile')];
             if (tiles.length < 2) { thumb.remove(); return; }
 
-            let positions = [];   // {x, y, w, h} per tile, relative to grid
+            // Feature-detect SVG-filter-inside-backdrop-filter support; fall
+            // back to a plain frosted look (see CSS .no-lens-filter) instead
+            // of shipping a broken/no-op effect on unsupported browsers.
+            const supportsLensFilter =
+                window.CSS && CSS.supports && (
+                    CSS.supports('backdrop-filter', 'url(#a)') ||
+                    CSS.supports('-webkit-backdrop-filter', 'url(#a)')
+                );
+            if (!supportsLensFilter) document.body.classList.add('no-lens-filter');
+
+            let positions = [];   // {x, y, w, h, radius} per tile, relative to grid
             let singleRow = true;
             let activeIndex = 0;
             let dragging = false;
             let startPointerX = 0, startX = 0, moved = 0;
-
-            // Zoomed clone of the active card's icon + label, shown inside
-            // the glass thumb — like an iOS liquid-glass lens.
-            const content = document.createElement('div');
-            content.className = 'social-select-thumb-content';
-            content.setAttribute('aria-hidden', 'true');
-            thumb.appendChild(content);
-
-            const refreshContent = () => {
-                const tile = tiles[activeIndex];
-                if (!tile) return;
-                content.innerHTML = '';
-                [...tile.children].forEach(child => content.appendChild(child.cloneNode(true)));
-            };
+            let lastMapKey = '';
 
             const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
-            const setTransform = (x, stretch = 1) => {
-                const squish = 1 - (stretch - 1) * 0.6;
-                thumb.style.transform = `translate3d(${x}px,${positions[activeIndex] ? positions[activeIndex].y : 0}px,0) scaleX(${stretch}) scaleY(${squish})`;
-            };
+            // Displacement map: near-zero at the centre (so the label stays
+            // legible), bending concentrated near the rim — reads as glass,
+            // not as a distortion filter smeared over the whole tile.
+            function buildDisplacementDataURL(w, h, { edge = 0.3, strength = 0.8 } = {}) {
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                const img = ctx.createImageData(w, h);
+                const data = img.data;
+                const cx = w / 2, cy = h / 2;
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        const dx = (x - cx) / cx;
+                        const dy = (y - cy) / cy;
+                        const r = Math.min(1, Math.sqrt(dx * dx + dy * dy));
+                        const i = (y * w + x) * 4;
+                        const t = Math.max(0, (r - (1 - edge)) / edge);
+                        const bend = Math.pow(Math.sin(Math.min(t, 1) * Math.PI / 2), 1.5) * strength;
+                        const len = Math.max(r, 0.0001);
+                        const nx = dx / len, ny = dy / len;
+                        const px = -nx * bend, py = -ny * bend;
+                        data[i] = 128 + px * 127;
+                        data[i + 1] = 128 + py * 127;
+                        data[i + 2] = 128;
+                        data[i + 3] = 255;
+                    }
+                }
+                ctx.putImageData(img, 0, 0);
+                return canvas.toDataURL();
+            }
+
+            // Only rebuild the displacement map when the tile's size
+            // actually changes (e.g. on resize/breakpoint), never per frame.
+            function ensureMap(w, h) {
+                const key = `${Math.round(w)}x${Math.round(h)}`;
+                if (key === lastMapKey) return;
+                lastMapKey = key;
+                mapImage.setAttribute('href', buildDisplacementDataURL(w, h));
+            }
 
             const setActiveTile = index => {
                 activeIndex = index;
                 tiles.forEach((t, i) => t.classList.toggle('is-selected', i === index));
-                refreshContent();
             };
 
             const currentX = () => {
                 const m = thumb.style.transform.match(/translate3d\(([-\d.]+)px/);
                 return m ? parseFloat(m[1]) : 0;
+            };
+
+            const setTransform = (x, stretch = 1) => {
+                const squish = 1 - (stretch - 1) * 0.6;
+                thumb.style.transform = `translate3d(${x}px,${positions[activeIndex] ? positions[activeIndex].y : 0}px,0) scaleX(${stretch}) scaleY(${squish})`;
             };
 
             const goTo = (index, animate) => {
@@ -481,7 +523,9 @@
                     : 'none';
                 thumb.style.width = p.w + 'px';
                 thumb.style.height = p.h + 'px';
+                thumb.style.borderRadius = p.radius;
                 thumb.style.transform = `translate3d(${p.x}px,${p.y}px,0)`;
+                ensureMap(p.w, p.h);
             };
 
             const measure = () => {
@@ -492,11 +536,15 @@
                 if (!singleRow) return;
                 positions = tiles.map(t => {
                     const r = t.getBoundingClientRect();
+                    // read the radius straight from the tile so the glass
+                    // always matches it, even across breakpoints
+                    const radius = getComputedStyle(t).borderRadius;
                     return {
                         x: r.left - gridRect.left,
                         y: r.top - gridRect.top,
                         w: r.width,
-                        h: r.height
+                        h: r.height,
+                        radius
                     };
                 });
                 goTo(activeIndex, false);

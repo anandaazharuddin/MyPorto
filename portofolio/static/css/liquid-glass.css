@@ -191,9 +191,11 @@ body.modal-open { overflow:hidden; }
 
 /* ============================================================
    Liquid-glass draggable selection indicator over the social cards.
-   A transparent, blurred, refractive pill floats above the row (never
-   opaque, never a flat button) and can be dragged; it always springs to
-   the nearest card and never rests between cards.
+   The pane uses real backdrop refraction (feDisplacementMap, applied
+   via the JS-generated #socialLensMapImage) so the card underneath is
+   read live through the glass instead of a cloned/zoomed copy, and its
+   border-radius is always synced from the tile's own computed radius
+   in JS so no card corner ever peeks out from behind it.
    ============================================================ */
 .social-grid { position:relative; }
 .social-tile.is-selected {
@@ -204,17 +206,17 @@ body.modal-open { overflow:hidden; }
   position:absolute;
   top:0;
   left:0;
-  border-radius:999px;
   overflow:hidden;
   z-index:5;
   cursor:grab;
   touch-action:none;
-  will-change:transform,width,height;
+  will-change:transform,width,height,border-radius;
   transition:box-shadow .25s ease;
-  /* clear, transparent glass — no blur of what's underneath, just a
-     lightly tinted pane with edge highlights so the card reads fully
-     through it */
-  background:linear-gradient(160deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.02) 45%,rgba(139,220,255,.06) 100%);
+  /* real backdrop refraction: reads the card behind it live, no cloned
+     content, no manual zoom of a duplicated icon/label */
+  backdrop-filter: url(#socialLensFilter) saturate(1.4) brightness(1.04);
+  -webkit-backdrop-filter: blur(.3px) saturate(1.4) brightness(1.04);
+  background:linear-gradient(160deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.015) 45%,rgba(139,220,255,.05) 100%);
   border:1px solid rgba(255,255,255,.42);
   box-shadow:
     0 10px 26px rgba(0,10,25,.28),
@@ -224,32 +226,12 @@ body.modal-open { overflow:hidden; }
     0 1.5px 0 rgba(255,255,255,.75) inset,
     0 -6px 12px rgba(0,0,0,.1) inset;
 }
-/* Zoomed clone of the active card's icon + label, like an iOS liquid-glass
-   lens magnifying whatever sits underneath it. Purely decorative — the
-   real drag/click handling lives on the thumb itself. */
-.social-select-thumb-content {
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:16px;
-  transform:scale(1.16);
-  transform-origin:center;
-  pointer-events:none;
-  filter:saturate(1.15);
-}
-.social-select-thumb-content span:nth-child(2) { min-width:0; }
-.social-select-thumb-content b,.social-select-thumb-content small { display:block; }
-.social-select-thumb-content b { font-size:12px; }
-.social-select-thumb-content small { color:var(--muted); font-size:10px; margin-top:2px; white-space:nowrap; }
-.social-select-thumb-content > i { color:var(--cyan); font-size:17px; font-style:normal; margin-left:auto; }
 /* faint chromatic rim, like light bending at the edge of curved glass */
 .social-select-thumb:before {
   content:'';
   position:absolute;
   inset:-1px;
-  border-radius:999px;
+  border-radius:inherit;
   padding:1px;
   background:conic-gradient(from var(--rim-angle,0deg),
     rgba(255,150,170,.4), rgba(255,230,150,.35), rgba(160,255,190,.35),
@@ -262,7 +244,7 @@ body.modal-open { overflow:hidden; }
   animation:rimSpin 6s linear infinite;
   pointer-events:none;
 }
-/* soft inner highlight streak near the top, shorter than the thumb */
+/* soft inner highlight streak near the top */
 .social-select-thumb:after {
   content:'';
   position:absolute;
@@ -285,6 +267,12 @@ body.modal-open { overflow:hidden; }
     0 0 0 1.5px rgba(255,255,255,.24) inset,
     0 1.5px 0 rgba(255,255,255,.85) inset,
     0 -6px 11px rgba(0,0,0,.16) inset;
+}
+/* graceful fallback for browsers that don't honour an SVG filter inside
+   backdrop-filter — still glassy, just without the magnify/bend */
+.no-lens-filter .social-select-thumb {
+  backdrop-filter: blur(6px) saturate(1.4) brightness(1.04);
+  -webkit-backdrop-filter: blur(6px) saturate(1.4) brightness(1.04);
 }
 
 /* ============================================================
