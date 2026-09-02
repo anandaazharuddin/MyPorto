@@ -9,3 +9,6 @@ media/
 .idea/
 .vscode/
 *.log
+*.pyc
+staticfiles/
+media/
