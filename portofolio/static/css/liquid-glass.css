@@ -1,0 +1,399 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+:root { --bg:#071a32; --blue:#4db8ff; --blue-bright:#8bdcff; --cyan:#b7f3ff; --muted:rgba(235,250,255,.7); --glass:rgba(255,255,255,.09); --line:rgba(220,248,255,.28); }
+* { box-sizing:border-box; margin:0; } html { scroll-behavior:smooth; } body { background:radial-gradient(circle at 15% 15%,rgba(77,184,255,.22),transparent 28%),radial-gradient(circle at 85% 75%,rgba(139,220,255,.14),transparent 25%),linear-gradient(135deg,#071a32 0%,#0b294b 52%,#075985 100%); background-attachment:fixed; color:#fff; font:400 16px/1.65 Inter,sans-serif; overflow-x:hidden; } a { color:inherit; text-decoration:none; }
+.bg-particles { inset:0; position:fixed; z-index:-1; overflow:hidden; pointer-events:none; } .bg-particles i { position:absolute; width:260px; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,rgba(139,220,255,.34),rgba(77,184,255,.12) 35%,transparent 68%); filter:blur(16px); animation:drift 19s ease-in-out infinite; } .bg-particles i:nth-child(1){left:4%;top:10%}.bg-particles i:nth-child(2){right:2%;top:28%;width:340px;animation-delay:-5s}.bg-particles i:nth-child(3){left:33%;bottom:-10%;width:280px;animation-delay:-9s}.bg-particles i:nth-child(4){right:25%;bottom:5%;width:180px;animation-delay:-13s}.bg-particles i:nth-child(5){left:48%;top:4%;width:120px;animation-delay:-16s} @keyframes drift { 0%,100%{transform:translate(0,0) scale(1);opacity:.7} 50%{transform:translate(35px,-42px) scale(1.12);opacity:1} }
+.liquid-glass { background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); backdrop-filter:blur(24px) saturate(190%); -webkit-backdrop-filter:blur(24px) saturate(190%); border:1px solid var(--line); border-radius:24px; box-shadow:0 8px 32px rgba(0,18,45,.28),inset 0 1px 0 rgba(255,255,255,.48),inset 0 -1px 0 rgba(139,220,255,.12); position:relative; overflow:hidden; } .liquid-glass:before { content:''; position:absolute; inset:0 auto 0 -110%; width:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.2),transparent); transition:left .7s; pointer-events:none; } .liquid-glass:hover:before { left:110%; }
+.page-section { max-width:1180px; margin:auto; padding:110px 28px; } .glass-nav { align-items:center; background:rgba(20,21,39,.7); display:flex; gap:55px; left:50%; padding:13px 22px 13px 28px; position:fixed; top:20px; transform:translateX(-50%); width:min(92%,950px); z-index:10; } .brand { font-size:18px; font-weight:800; letter-spacing:-.05em; }.brand span,em { color:var(--cyan); font-style:normal; }.nav-links { display:flex; gap:30px; margin-left:auto; }.nav-links a { color:var(--muted); font-size:13px; position:relative; }.nav-links a:after { background:var(--cyan); bottom:-7px; content:''; height:1px; left:0; position:absolute; transform:scaleX(0); transform-origin:left; transition:transform .25s; width:100%; }.nav-links a:hover { color:#fff; }.nav-links a:hover:after { transform:scaleX(1); }.menu-toggle { background:none; border:0; color:#fff; display:none; font-size:22px; }
+.hero { align-items:center; display:grid; gap:clamp(40px,8vw,120px); grid-template-columns:1.1fr .9fr; min-height:100vh; padding-top:150px; }.hero h1,.section-heading h2 { background:linear-gradient(120deg,#fff 25%,#a5b4fc 65%,var(--cyan)); background-clip:text; -webkit-background-clip:text; color:transparent; font-size:clamp(3rem,7vw,6.6rem); letter-spacing:-.08em; line-height:.98; }.hero h2 { font-size:clamp(1.3rem,2.4vw,2rem); font-weight:500; margin:25px 0 14px; }.lead { color:var(--muted); max-width:530px; }.eyebrow { color:var(--cyan); font:500 11px 'DM Mono',monospace; letter-spacing:.15em; margin-bottom:25px; }.eyebrow span { background:#66e3b4; border-radius:50%; display:inline-block; height:6px; margin-left:8px; width:6px; }.actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }.glass-btn { align-items:center; background:rgba(255,255,255,.08); backdrop-filter:blur(14px) saturate(170%); -webkit-backdrop-filter:blur(14px) saturate(170%); border:1px solid rgba(255,255,255,.24); border-radius:99px; box-shadow:inset 0 1px rgba(255,255,255,.3); color:#fff; display:inline-flex; font-size:13px; font-weight:600; gap:15px; padding:13px 20px; transition:transform .3s,background .3s,box-shadow .3s; }.glass-btn:hover { background:rgba(255,255,255,.16); box-shadow:0 10px 28px rgba(99,102,241,.3); transform:translateY(-3px); }.glass-btn span,.text-link span,.email-link span { color:var(--cyan); font-size:18px; }.glass-btn.primary { background:var(--blue); border-color:rgba(255,255,255,.35); }.hero-portrait { aspect-ratio:.82; max-width:390px; padding:10px; transform:rotate(2deg); }.hero-portrait img,.portrait-placeholder { height:100%; object-fit:cover; width:100%; }.portrait-placeholder { align-items:center; background:linear-gradient(145deg,#25294b,#6570b2); color:rgba(255,255,255,.5); display:flex; font:500 12px 'DM Mono'; justify-content:center; }.portrait-label { bottom:28px; color:rgba(255,255,255,.65); font:10px/1.5 'DM Mono'; left:28px; position:absolute; }.portrait-label b { color:#fff; font-weight:400; }
+.content-section { max-width:1240px; }.section-heading { max-width:680px; }.section-heading h2 { font-size:clamp(2.8rem,6vw,5.4rem); margin-bottom:20px; }.section-heading>p:last-child { color:var(--muted); max-width:450px; }.filter-tabs { display:flex; gap:5px; margin:45px 0 25px; padding:5px; width:fit-content; }.filter-tabs a { border-radius:99px; color:var(--muted); font-size:12px; padding:8px 15px; }.filter-tabs a.active,.filter-tabs a:hover { background:rgba(255,255,255,.15); color:#fff; }.projects-grid { display:grid; gap:22px; grid-template-columns:repeat(3,1fr); }.project-card { transition:transform .35s,border-color .35s; }.project-card:hover { border-color:rgba(118,228,247,.45); transform:translateY(-6px); }.project-image { aspect-ratio:1.5; background:linear-gradient(135deg,#24284c,#303a76); overflow:hidden; position:relative; }.project-image img { height:100%; object-fit:cover; transition:transform .5s; width:100%; }.project-card:hover .project-image img { transform:scale(1.05); }.project-image>span { align-items:center; color:rgba(255,255,255,.18); display:flex; font-size:80px; font-weight:800; height:100%; justify-content:center; }.project-image small { bottom:14px; color:#fff; font:11px 'DM Mono'; position:absolute; right:16px; }.project-content { padding:20px 21px 24px; }.project-meta { color:var(--muted); display:flex; font:10px 'DM Mono'; justify-content:space-between; margin-bottom:15px; }.project-meta a { color:var(--cyan); }.project-content h3 { font-size:20px; margin-bottom:8px; }.project-content p { color:var(--muted); font-size:13px; min-height:63px; }.project-tags,.skills,.socials { display:flex; flex-wrap:wrap; gap:7px; margin:18px 0; }.project-tags span,.skills span { background:rgba(118,228,247,.08); border:1px solid rgba(118,228,247,.2); border-radius:99px; color:#b9f3fa; font-size:10px; padding:4px 9px; }.text-link { color:#fff; display:inline-flex; font-size:12px; gap:8px; margin-top:12px; }.empty-state { color:var(--muted); grid-column:1/-1; padding:30px; text-align:center; }
+
+/* ===== About section layout =====
+   Left column (about-column): bio full width, then Licenses/Certifications
+   side-by-side with Organizations underneath it.
+   Right column (about-side): Education stacked on top of Languages. */
+.about-layout { display:grid; gap:28px; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); margin-top:42px; align-items:start; }
+.about-column { display:grid; gap:24px; }
+.about-side { display:grid; gap:32px; grid-template-columns:1fr; align-items:start; }
+.about-bio { padding:26px; }
+.about-bio p { color:var(--muted); margin-bottom:24px; }
+.skills span { color:#fff; font-size:11px; padding:7px 11px; }
+
+.organization-block, .education-block, .languages-block, .meta-list { display:grid; gap:16px; padding:0; background:transparent; border:0; box-shadow:none; overflow:visible; align-content:start; }
+.organization-block .subsection-title, .education-block .subsection-title, .languages-block .subsection-title, .meta-list h3 { margin:0 0 6px; }
+.meta-list h3.subsection-title, .organization-block h3.subsection-title, .education-block h3.subsection-title, .languages-block h3.subsection-title { display:inline-block; font-size:15px; font-weight:600; letter-spacing:-.02em; border:1px solid var(--line); border-bottom:1px solid var(--line); padding:10px 18px; margin:0 0 6px; border-radius:16px; width:fit-content; background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.045)); backdrop-filter:blur(24px) saturate(190%); -webkit-backdrop-filter:blur(24px) saturate(190%); box-shadow:0 8px 32px rgba(0,18,45,.28),inset 0 1px 0 rgba(255,255,255,.48),inset 0 -1px 0 rgba(139,220,255,.12); }
+.org-list, .education-list, .languages-list, .meta-items { display:grid; gap:12px; }
+
+/* When a list has many entries it scrolls inside its own box instead of
+   stretching the whole About section taller and taller. */
+.org-list, .meta-items { max-height:380px; overflow-y:auto; padding-right:10px; margin-right:-10px; }
+.org-list::-webkit-scrollbar, .meta-items::-webkit-scrollbar { width:6px; }
+.org-list::-webkit-scrollbar-track, .meta-items::-webkit-scrollbar-track { background:transparent; }
+.org-list::-webkit-scrollbar-thumb, .meta-items::-webkit-scrollbar-thumb { background:rgba(118,228,247,.35); border-radius:8px; }
+
+.org-item, .edu-item { align-items:flex-start; display:grid; gap:12px; grid-template-columns:76px minmax(0,1fr); padding:0 0 12px; border-bottom:1px solid rgba(220,248,255,.18); background:transparent; border-radius:0; box-shadow:none; overflow:visible; }
+.org-item:last-child, .edu-item:last-child { border-bottom:0; padding-bottom:0; }
+.org-thumb, .meta-thumb { background:transparent; border:0; cursor:pointer; display:block; padding:0; }
+.org-thumb img, .meta-thumb img { border:1px solid var(--line); border-radius:12px; height:76px; object-fit:cover; width:76px; }
+.meta-thumb img { height:56px; width:56px; }
+
+/* Items without an image: drop the thumbnail column entirely so text
+   stays compact and aligned, instead of leaving an empty placeholder box. */
+.org-item.no-image, .meta-item.no-image { grid-template-columns:minmax(0,1fr); }
+
+.org-item b,.org-item strong, .edu-item b, .edu-item strong { display:block; font-size:14px; }
+.org-item strong, .edu-item strong { color:var(--cyan); font-size:12px; font-weight:500; }
+.org-item small, .edu-item small { color:var(--muted); display:block; font:10px 'DM Mono'; margin:3px 0 7px; }
+.org-item p { color:var(--muted); font-size:12px; margin:0; }
+.education-block .edu-item { grid-template-columns:1fr; padding:0 0 10px; }
+
+.languages-block { gap:12px; }
+.languages-list { gap:8px; }
+.language-item { align-items:center; border-bottom:1px solid rgba(220,248,255,.15); display:flex; justify-content:space-between; gap:12px; padding:0 0 10px; background:transparent; }
+.language-item:last-child { border-bottom:0; padding-bottom:0; }
+.language-item span { font-weight:600; }
+.language-item small { color:var(--muted); font:10px 'DM Mono'; }
+
+.meta-item { align-items:flex-start; display:grid; gap:12px; grid-template-columns:56px minmax(0,1fr); padding:0 0 14px; border-bottom:1px solid rgba(220,248,255,.18); }
+.meta-item:last-child { border-bottom:0; padding-bottom:0; }
+.meta-item b, .meta-item strong { display:block; }
+.meta-item strong { color:var(--cyan); font-size:12px; font-weight:500; }
+.meta-item small { color:var(--muted); display:block; font:10px 'DM Mono'; margin-top:4px; }
+
+.contact-section { max-width:1060px; padding-bottom:140px; }.contact-card { display:grid; gap:65px; grid-template-columns:1fr 1fr; padding:clamp(28px,6vw,65px); }.contact-card h2 { font-size:clamp(2.3rem,5vw,4.4rem); letter-spacing:-.07em; line-height:1; margin-bottom:22px; }.contact-intro { color:var(--muted); max-width:350px; }.email-link { border-bottom:1px solid rgba(118,228,247,.5); display:inline-flex; font-size:14px; gap:18px; margin-top:30px; padding-bottom:7px; }.socials a { color:var(--muted); font-size:12px; margin-right:15px; }.socials a:hover { color:#fff; }.contact-form label { color:var(--muted); display:block; font-size:11px; margin-bottom:14px; }.contact-form input,.contact-form textarea { background:rgba(0,0,0,.12); border:1px solid var(--line); border-radius:12px; color:#fff; display:block; font:13px Inter,sans-serif; margin-top:6px; outline:0; padding:12px 14px; resize:vertical; width:100%; }.contact-form input:focus,.contact-form textarea:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(118,228,247,.1); }.form-error { color:#ff9b9b; display:block; }.contact-form .glass-btn { margin-top:7px; } footer { color:var(--muted); font:11px 'DM Mono'; padding:25px; text-align:center; } footer span { margin-left:12px; opacity:.6; }
+.reveal { opacity:0; transform:translateY(20px); transition:opacity .7s ease,transform .7s ease; }.reveal.visible { opacity:1; transform:none; } ::-webkit-scrollbar { width:8px; } ::-webkit-scrollbar-track { background:#15182b; } ::-webkit-scrollbar-thumb { background:rgba(118,228,247,.35); border-radius:8px; }
+@media (max-width:900px) { .projects-grid { grid-template-columns:repeat(2,1fr); }.hero { gap:35px; }.about-layout { gap:35px; } } @media (max-width:700px) { .glass-nav { padding:12px 18px; }.menu-toggle { display:block; margin-left:auto; }.nav-links { background:rgba(20,21,39,.95); border:1px solid var(--line); border-radius:16px; display:none; flex-direction:column; gap:0; left:0; padding:10px; position:absolute; right:0; top:58px; }.nav-links.open { display:flex; }.nav-links a { padding:10px; }.hero { grid-template-columns:1fr; padding-top:135px; }.hero-portrait { margin:10px auto 0; max-width:290px; width:75%; }.page-section { padding:80px 20px; }.projects-grid,.about-layout,.contact-card { grid-template-columns:1fr; }.filter-tabs { max-width:100%; overflow-x:auto; }.contact-card { gap:35px; }.section-heading h2 { font-size:3rem; } } @media (prefers-reduced-motion:reduce) { *,*:before { animation-duration:.01ms!important; scroll-behavior:auto!important; transition-duration:.01ms!important; } }
+
+/* Bright blue iPhone-inspired finish and polished motion layer. */
+.hero h1,.section-heading h2 { background:linear-gradient(120deg,#fff 25%,#b9efff 65%,var(--blue-bright)); background-clip:text; -webkit-background-clip:text; }
+.hero h2 { color:#e5faff; }
+.eyebrow { color:var(--blue-bright); }
+.glass-nav { background:rgba(8,30,56,.72); }
+.nav-links a:after { background:var(--blue-bright); height:2px; }
+.glass-btn.primary { background:linear-gradient(135deg,rgba(139,220,255,.22),rgba(255,255,255,.07)); backdrop-filter:blur(16px) saturate(200%); -webkit-backdrop-filter:blur(16px) saturate(200%); border-color:rgba(255,255,255,.5); box-shadow:0 8px 25px rgba(77,184,255,.16), inset 0 1px 0 rgba(255,255,255,.4); color:#fff; }
+.glass-btn:hover { background:rgba(139,220,255,.22); box-shadow:0 10px 28px rgba(77,184,255,.38); }
+.project-card { animation:cardRise .7s both; }
+.project-card:nth-child(2) { animation-delay:.1s; }.project-card:nth-child(3) { animation-delay:.2s; }.project-card:nth-child(4) { animation-delay:.3s; }
+@keyframes cardRise { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+.hero-portrait { animation:portraitFloat 7s ease-in-out infinite; }
+@keyframes portraitFloat { 0%,100% { transform:rotate(2deg) translateY(0); } 50% { transform:rotate(1deg) translateY(-9px); } }
+::-webkit-scrollbar-thumb { background:linear-gradient(var(--blue),var(--cyan)); }
+
+.welcome-overlay { align-items:center; animation:overlayIn .45s ease both; background:rgba(2,14,30,.58); display:flex; inset:0; justify-content:center; padding:20px; position:fixed; z-index:30; }
+.welcome-overlay.is-closing { animation:overlayOut .45s ease both; pointer-events:none; }
+.welcome-modal { animation:modalIn .7s cubic-bezier(.2,.8,.2,1) both; max-width:520px; padding:clamp(32px,6vw,58px); text-align:center; width:100%; }
+.welcome-overlay.is-closing .welcome-modal { animation:modalOut .45s ease both; }
+.welcome-modal:after { background:radial-gradient(circle,rgba(139,220,255,.24),transparent 65%); content:''; height:240px; left:50%; pointer-events:none; position:absolute; top:-150px; transform:translateX(-50%); width:240px; }
+.welcome-close { background:rgba(255,255,255,.08); border:1px solid var(--line); border-radius:50%; color:#fff; cursor:pointer; font-size:22px; height:34px; line-height:1; position:absolute; right:18px; top:18px; transition:.25s; width:34px; z-index:1; }.welcome-close:hover { background:rgba(139,220,255,.3); transform:rotate(90deg); }
+.welcome-mark { align-items:center; background:linear-gradient(135deg,#4db8ff,#b7f3ff); border-radius:50%; box-shadow:0 0 35px rgba(77,184,255,.45); color:#07315a; display:flex; font-size:20px; height:52px; justify-content:center; margin:0 auto 22px; width:52px; }
+.welcome-modal .eyebrow { margin-bottom:14px; }.welcome-modal h2 { font-size:clamp(2.2rem,5vw,3.8rem); letter-spacing:-.08em; line-height:1.02; }.welcome-copy { color:var(--muted); font-size:13px; margin:18px auto 28px; max-width:340px; }.welcome-modal .glass-btn { position:relative; z-index:1; }
+@keyframes overlayIn { from { opacity:0; } to { opacity:1; } } @keyframes overlayOut { to { opacity:0; } } @keyframes modalIn { from { opacity:0; transform:translateY(30px) scale(.94); } to { opacity:1; transform:translateY(0) scale(1); } } @keyframes modalOut { to { opacity:0; transform:translateY(18px) scale(.96); } }
+.social-section { max-width:1060px; padding-bottom:35px; }.social-heading { align-items:end; display:flex; justify-content:space-between; margin-bottom:25px; }.social-heading h2 { font-size:clamp(1.8rem,4vw,3rem); letter-spacing:-.06em; }.social-heading .eyebrow { margin-bottom:9px; }.social-grid { display:grid; gap:12px; grid-template-columns:repeat(4,1fr); }.social-tile { align-items:center; display:flex; gap:12px; min-height:92px; padding:16px; transition:border-color .3s,box-shadow .3s,transform .3s; }.social-tile:hover { border-color:rgba(183,243,255,.7); box-shadow:0 15px 32px rgba(19,139,205,.25),inset 0 1px 0 rgba(255,255,255,.55); transform:translateY(-7px); }.social-tile:active { transform:translateY(-2px) scale(.97); }.social-icon { align-items:center; background:rgba(139,220,255,.14); border:1px solid rgba(183,243,255,.3); border-radius:14px; display:flex; flex:0 0 40px; height:40px; justify-content:center; transition:transform .3s,background .3s; }.social-tile:hover .social-icon { background:rgba(139,220,255,.3); transform:rotate(-8deg) scale(1.08); }.social-icon svg { fill:none; height:21px; stroke:#b7f3ff; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.7; width:21px; }.social-icon svg path:first-child:not(:only-child) { fill:#b7f3ff; stroke:none; }.social-icon .fill-dot { fill:#b7f3ff; stroke:none; }.social-tile span:nth-child(2) { min-width:0; }.social-tile b,.social-tile small { display:block; }.social-tile b { font-size:12px; }.social-tile small { color:var(--muted); font-size:10px; margin-top:2px; white-space:nowrap; }.social-tile>i { color:var(--cyan); font-size:17px; font-style:normal; margin-left:auto; transition:transform .3s; }.social-tile:hover>i { transform:translate(3px,-3px); }
+@media (max-width:700px) { .social-heading { align-items:start; display:block; }.social-grid { grid-template-columns:repeat(2,1fr); }.social-tile { min-height:78px; padding:12px; }.welcome-modal { padding:38px 25px 30px; } }
+@media (prefers-reduced-motion:reduce) { .welcome-overlay,.welcome-modal,.social-tile,.hero-portrait { animation:none!important; } }
+
+.project-card { cursor:pointer; }.project-modal { align-items:center; background:rgba(1,12,26,.78); display:none; inset:0; justify-content:center; padding:20px; position:fixed; z-index:25; }.project-modal.is-open { display:flex; animation:overlayIn .35s ease both; }.project-modal-card { display:grid; grid-template-columns:1.1fr .9fr; max-height:90vh; max-width:920px; overflow:auto; width:100%; scrollbar-width:thin; scrollbar-color:rgba(139,220,255,.55) rgba(255,255,255,.05); }
+.project-modal-card::-webkit-scrollbar { width:10px; }
+.project-modal-card::-webkit-scrollbar-track { background:rgba(255,255,255,.04); border-radius:99px; margin:14px 0; }
+.project-modal-card::-webkit-scrollbar-thumb { background:linear-gradient(180deg,rgba(183,243,255,.55),rgba(77,184,255,.35)); border-radius:99px; border:2px solid transparent; background-clip:padding-box; box-shadow:0 0 10px rgba(139,220,255,.3) inset, 0 0 6px rgba(139,220,255,.25); }
+.project-modal-card::-webkit-scrollbar-thumb:hover { background:linear-gradient(180deg,rgba(183,243,255,.8),rgba(77,184,255,.55)); background-clip:padding-box; }.modal-close { background:rgba(255,255,255,.1); border:1px solid var(--line); border-radius:50%; color:#fff; cursor:pointer; font-size:23px; height:36px; position:absolute; right:18px; top:18px; width:36px; z-index:2; }.modal-close:hover { background:rgba(139,220,255,.3); transform:rotate(90deg); }.modal-gallery { background:rgba(0,15,35,.42); min-height:360px; overflow:hidden; position:relative; }.gallery-slide { display:none; height:100%; margin:0; position:relative; }.gallery-slide.active { display:block; animation:slideIn .35s ease both; }.gallery-slide img { height:100%; min-height:360px; object-fit:cover; width:100%; }.gallery-slide figcaption { background:linear-gradient(transparent,rgba(0,10,25,.8)); bottom:0; color:#fff; font-size:12px; left:0; padding:45px 24px 20px; position:absolute; right:0; }.gallery-prev,.gallery-next { background:rgba(5,30,55,.72); border:1px solid var(--line); border-radius:50%; color:#fff; cursor:pointer; height:38px; position:absolute; top:50%; transition:.25s; width:38px; }.gallery-prev { left:16px; }.gallery-next { right:16px; }.gallery-prev:hover,.gallery-next:hover { background:var(--blue); transform:scale(1.1); }.modal-copy { padding:42px 34px; }.modal-copy h2 { font-size:clamp(2rem,4vw,3.5rem); letter-spacing:-.07em; line-height:1; margin-bottom:20px; }.modal-copy>p:not(.eyebrow) { color:var(--muted); font-size:13px; }.modal-tags { display:flex; flex-wrap:wrap; gap:7px; margin:24px 0; }.modal-tags span { border:1px solid rgba(183,243,255,.3); border-radius:99px; color:var(--cyan); font-size:10px; padding:5px 10px; }.modal-links { display:flex; flex-wrap:wrap; gap:8px; }.experience-gallery { display:flex; gap:7px; margin:0 0 16px -22px; overflow-x:auto; padding-left:22px; }.experience-gallery img { border:1px solid var(--line); border-radius:10px; height:58px; object-fit:cover; width:78px; }.profile-columns { display:grid; gap:45px; grid-template-columns:1fr 1fr; margin-top:75px; }.subsection-title { border-bottom:1px solid var(--line); font-size:16px; margin-bottom:14px; padding-bottom:12px; }.profile-item { align-items:flex-start; display:flex; gap:14px; margin-bottom:12px; padding:15px; }.profile-item>img { border-radius:10px; height:64px; object-fit:cover; width:64px; }.profile-item b,.profile-item strong { display:block; font-size:13px; }.profile-item strong { color:var(--cyan); font-size:11px; font-weight:500; }.profile-item small { color:var(--muted); display:block; font:10px 'DM Mono'; margin:3px 0 7px; }.profile-item p { color:var(--muted); font-size:11px; }.org-title { margin-top:35px; }.muted-note { color:var(--muted); font-size:12px; }.social-icon svg rect { stroke:#b7f3ff; }
+/* Scoped to the standalone Profile page only, so it never conflicts with
+   the homepage About section's plain Languages list. */
+.profile-page-grid .language-item, .profile-columns .language-item { display:flex; justify-content:space-between; margin-bottom:8px; padding:14px 16px; }
+.profile-page-grid .language-item b, .profile-columns .language-item b { font-size:13px; }
+.profile-page-grid .language-item span, .profile-columns .language-item span { color:var(--cyan); font-size:11px; text-align:right; }
+@keyframes slideIn { from { opacity:0; transform:translateX(18px); } to { opacity:1; transform:translateX(0); } }
+@media (max-width:700px) { .project-modal-card { grid-template-columns:1fr; max-height:92vh; }.modal-gallery,.gallery-slide img { min-height:240px; }.modal-copy { padding:28px 22px; }.profile-columns { grid-template-columns:1fr; margin-top:50px; } }
+
+.hero-portrait { cursor:default; }
+.inner-page { padding-top:190px; }.inner-page .section-heading h1 { font-size:clamp(3rem,7vw,6rem); }.experience-list { display:grid; gap:16px; margin-top:32px; }
+
+/* Experience cards: gallery column + copy column when a gallery exists,
+   single column (no wasted blank space) when there isn't one. */
+.experience-card { display:grid; gap:16px; grid-template-columns:minmax(200px, 260px) minmax(0,1fr); padding:12px; max-width:100%; }
+.experience-card.no-gallery { grid-template-columns:1fr; }
+.experience-card-copy { padding:12px 14px; }
+.experience-card-copy h2 { font-size:clamp(1.2rem,2vw,1.8rem); letter-spacing:-.06em; line-height:1.1; margin-bottom:6px; }.experience-card-copy>strong { color:var(--cyan); font-size:13px; }.experience-card-copy>p:last-child { color:var(--muted); font-size:12.5px; margin-top:12px; }.experience-card .experience-gallery { height:100%; margin:0; padding:0; }.experience-card .experience-gallery figure { flex:0 0 100%; height:100%; min-height:150px; max-height:190px; position:relative; }.experience-card .experience-gallery img { border:0; border-radius:15px; height:100%; width:100%; }.experience-card .experience-gallery figcaption { background:linear-gradient(transparent,rgba(0,15,35,.8)); bottom:0; color:#fff; font-size:11px; left:0; padding:35px 17px 15px; position:absolute; right:0; }.profile-page-grid { display:grid; gap:55px; grid-template-columns:1fr 1fr; margin-top:55px; }.page-gap { margin-top:45px; }.profile-page-grid .profile-item { min-height:84px; }.profile-page-grid .subsection-title { font-size:18px; }
+.cursor-glass { background:rgba(183,243,255,.18); border:1px solid rgba(255,255,255,.65); border-radius:50%; box-shadow:0 0 20px rgba(77,184,255,.38),inset 0 1px rgba(255,255,255,.8); height:44px; left:0; pointer-events:none; position:fixed; top:0; transform:translate(-50%,-50%); transition:width .25s,height .25s,background .25s; width:44px; z-index:50; }.cursor-glass.is-hovering { background:rgba(183,243,255,.38); height:68px; width:68px; }
+.tiktok-strip { max-width:1060px; padding-top:0; }.tiktok-strip .social-tile { max-width:280px; }
+.social-section { max-width:1180px; padding:85px 28px 35px; position:relative; }.social-section:before { background:linear-gradient(120deg,rgba(139,220,255,.13),rgba(255,255,255,.035)); border:1px solid rgba(220,248,255,.2); border-radius:34px; box-shadow:inset 0 1px rgba(255,255,255,.3),0 15px 45px rgba(0,20,55,.2); content:''; inset:45px 0 0; position:absolute; z-index:-1; }.social-section .social-grid { padding:0 28px 28px; }.social-section .social-tile { background:rgba(255,255,255,.075); }
+.education-page-block { margin-top:65px; }.education-page-block .subsection-title { margin-bottom:15px; }
+.project-image { aspect-ratio:16/9; }.project-content h3 { min-height:30px; }.modal-gallery { aspect-ratio:16/9; min-height:0; }.gallery-slide img { object-fit:contain; background:#061a31; }
+@media (max-width:700px) { .inner-page { padding-top:135px; }.experience-card,.profile-page-grid { grid-template-columns:1fr; }.experience-card .experience-gallery { height:230px; }.cursor-glass { display:none; } }
+
+.hero { overflow:clip; }
+.hero-portrait { padding:0; }
+.coverflow-track,.coverflow-slide { border-radius:23px; }
+
+/* Final clean portrait / coverflow rules: the active photo is fully
+   opaque and crisp; prev/next photos sit further to the sides, are
+   noticeably dimmer/blurrier, ignore clicks, and never cover the
+   active photo. */
+.coverflow { aspect-ratio:.82; height:430px; min-height:430px; overflow:visible; perspective:1100px; }
+.coverflow-track { height:100%; position:relative; transform-style:preserve-3d; width:100%; }
+.coverflow-slide { aspect-ratio:.82; background:#12365c; border:1px solid rgba(220,248,255,.35); border-radius:17px; box-shadow:0 14px 34px rgba(0,18,45,.35); height:100%; inset:0; margin:0; opacity:0; overflow:hidden; position:absolute; transform:translateX(0) scale(.72); transition:transform .8s cubic-bezier(.2,.75,.2,1),opacity .8s,filter .8s; width:100%; pointer-events:none; }
+.coverflow-slide img,.coverflow-slide .portrait-placeholder { height:100%; object-fit:cover; width:100%; }
+.coverflow-slide figcaption { background:linear-gradient(transparent,rgba(0,15,35,.8)); bottom:0; font-size:11px; left:0; padding:34px 18px 14px; position:absolute; right:0; }
+.coverflow-slide.active { align-items:initial; display:block; opacity:1; padding:0; transform:translateX(0) scale(1); z-index:3; filter:none; pointer-events:auto; }
+.coverflow-slide.prev,.coverflow-slide.next { filter:blur(3px) saturate(.7) brightness(.75); opacity:.32; z-index:1; }
+.coverflow-slide.prev { transform:translateX(-46%) scale(.72) rotateY(9deg); }
+.coverflow-slide.next { transform:translateX(46%) scale(.72) rotateY(-9deg); }
+.coverflow-slide.prev img,.coverflow-slide.next img { transform:scale(1.06); }
+
+/* Image preview popup used by Organizations & Licenses/Certifications
+   thumbnails. This was previously missing, which is why the panel
+   rendered as a plain block at the bottom of the page instead of a
+   centered modal overlay. */
+body.modal-open { overflow:hidden; }
+.image-lightbox { align-items:center; background:rgba(1,12,26,.82); display:none; inset:0; justify-content:center; padding:24px; position:fixed; z-index:40; }
+.image-lightbox.is-open { display:flex; animation:overlayIn .3s ease both; }
+.image-lightbox-panel { max-width:560px; padding:20px; text-align:center; width:100%; }
+.image-lightbox-panel img { border-radius:16px; display:block; margin:0 auto; max-height:72vh; max-width:100%; object-fit:contain; }
+.image-lightbox-close { background:rgba(255,255,255,.1); border:1px solid var(--line); border-radius:50%; color:#fff; cursor:pointer; font-size:22px; height:36px; position:absolute; right:14px; top:14px; transition:.25s; width:36px; z-index:2; }
+.image-lightbox-close:hover { background:rgba(139,220,255,.3); transform:rotate(90deg); }
+@media (max-width:700px) { .image-lightbox-panel { padding:16px; } }
+
+/* Shimmering gradient sweep on the About & Experience headings, plus a
+   small floating spark icon next to the About heading, so these two
+   sections don't feel static/monotone. */
+#about .section-heading h2,
+#experience .section-heading h2 {
+  background-size:220% auto;
+  animation:shimmerText 6s ease-in-out infinite;
+}
+@keyframes shimmerText {
+  0%,100% { background-position:0% center; }
+  50% { background-position:100% center; }
+}
+.about-heading { position:relative; }
+.about-spark {
+  position:absolute;
+  top:-4px;
+  right:clamp(6px,5vw,50px);
+  font-size:22px;
+  line-height:1;
+  color:var(--cyan);
+  text-shadow:0 0 16px rgba(139,220,255,.65);
+  animation:sparkFloat 4.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sparkFloat {
+  0%,100% { transform:translateY(0) rotate(0deg) scale(1); opacity:.65; }
+  50% { transform:translateY(-12px) rotate(18deg) scale(1.15); opacity:1; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #about .section-heading h2, #experience .section-heading h2, .about-spark { animation:none!important; }
+}
+.social-section { position:relative; }
+.cursor-glass { display:none; }
+.social-tile:hover { transform:none; }
+.social-tile:active { transform:none; }
+@media (max-width:700px), (pointer:coarse) { .social-select-thumb { display:none !important; } }
+
+/* ============================================================
+   Liquid-glass draggable selection indicator over the social cards.
+   A transparent, blurred, refractive pill floats above the row (never
+   opaque, never a flat button) and can be dragged; it always springs to
+   the nearest card and never rests between cards.
+   ============================================================ */
+.social-grid { position:relative; }
+.social-tile.is-selected {
+  border-color:rgba(139,220,255,.55);
+  box-shadow:0 0 0 1px rgba(139,220,255,.3),0 15px 32px rgba(19,139,205,.22),inset 0 1px 0 rgba(255,255,255,.55);
+}
+.social-select-thumb {
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:999px;
+  overflow:hidden;
+  z-index:5;
+  cursor:grab;
+  touch-action:none;
+  will-change:transform,width,height;
+  transition:box-shadow .25s ease;
+  /* clear, transparent glass — no blur of what's underneath, just a
+     lightly tinted pane with edge highlights so the card reads fully
+     through it */
+  background:linear-gradient(160deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.02) 45%,rgba(139,220,255,.06) 100%);
+  border:1px solid rgba(255,255,255,.42);
+  box-shadow:
+    0 10px 26px rgba(0,10,25,.28),
+    0 2px 8px rgba(0,10,25,.16),
+    0 0 22px rgba(139,220,255,.2),
+    0 0 0 1px rgba(255,255,255,.14) inset,
+    0 1.5px 0 rgba(255,255,255,.75) inset,
+    0 -6px 12px rgba(0,0,0,.1) inset;
+}
+/* Zoomed clone of the active card's icon + label, like an iOS liquid-glass
+   lens magnifying whatever sits underneath it. Purely decorative — the
+   real drag/click handling lives on the thumb itself. */
+.social-select-thumb-content {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px;
+  transform:scale(1.16);
+  transform-origin:center;
+  pointer-events:none;
+  filter:saturate(1.15);
+}
+.social-select-thumb-content span:nth-child(2) { min-width:0; }
+.social-select-thumb-content b,.social-select-thumb-content small { display:block; }
+.social-select-thumb-content b { font-size:12px; }
+.social-select-thumb-content small { color:var(--muted); font-size:10px; margin-top:2px; white-space:nowrap; }
+.social-select-thumb-content > i { color:var(--cyan); font-size:17px; font-style:normal; margin-left:auto; }
+/* faint chromatic rim, like light bending at the edge of curved glass */
+.social-select-thumb:before {
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:999px;
+  padding:1px;
+  background:conic-gradient(from var(--rim-angle,0deg),
+    rgba(255,150,170,.4), rgba(255,230,150,.35), rgba(160,255,190,.35),
+    rgba(140,215,255,.45), rgba(200,170,255,.4), rgba(255,150,170,.4));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  filter:blur(1.5px);
+  opacity:.55;
+  animation:rimSpin 6s linear infinite;
+  pointer-events:none;
+}
+/* soft inner highlight streak near the top, shorter than the thumb */
+.social-select-thumb:after {
+  content:'';
+  position:absolute;
+  top:14%;
+  left:50%;
+  width:55%;
+  height:30%;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55) 45%,rgba(255,255,255,.55) 55%,transparent);
+  filter:blur(2px);
+  opacity:.7;
+  pointer-events:none;
+}
+.social-select-thumb.is-dragging {
+  box-shadow:
+    0 16px 36px rgba(0,10,25,.42),
+    0 4px 10px rgba(0,10,25,.28),
+    0 0 30px rgba(139,220,255,.32),
+    0 0 0 1.5px rgba(255,255,255,.24) inset,
+    0 1.5px 0 rgba(255,255,255,.85) inset,
+    0 -6px 11px rgba(0,0,0,.16) inset;
+}
+
+/* ============================================================
+   NEW — Experience gallery: horizontal-only scroll + Liquid Glass
+   Tab Bar (draggable glass pill scrollbar), like the iOS bar shown
+   in the reference screenshot.
+   ============================================================ */
+.experience-gallery-wrap { display:flex; flex-direction:column; height:100%; }
+.experience-card .experience-gallery {
+  flex:1;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.experience-card .experience-gallery::-webkit-scrollbar { display:none; }
+.experience-card .experience-gallery figure { scroll-snap-align:start; }
+
+.liquid-scrollbar {
+  position:relative;
+  height:20px;
+  margin-top:12px;
+  border-radius:99px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  overflow:visible;
+  touch-action:none;
+  cursor:pointer;
+}
+.liquid-scrollbar:before {
+  content:'';
+  position:absolute;
+  inset:8px 0;
+  border-radius:99px;
+  background:rgba(255,255,255,.06);
+}
+
+/* The draggable knob: deliberately taller than the thin track so it
+   floats above/below it like an iOS slider thumb (track stays thin,
+   overflow:visible on .liquid-scrollbar lets the knob protrude). Subtle
+   metallic/glass gradient, inner highlight, soft shadow, pill shape. */
+.liquid-scrollbar-thumb {
+  position:absolute;
+  top:50%;
+  left:0;
+  height:32px;
+  min-width:36px;
+  border-radius:999px;
+  cursor:grab;
+  will-change:transform,width;
+  transition:box-shadow .2s ease, height .18s ease, width .18s ease;
+  background:linear-gradient(165deg,rgba(255,255,255,.32) 0%,rgba(210,225,240,.14) 45%,rgba(255,255,255,.05) 55%,rgba(200,220,240,.18) 100%);
+  backdrop-filter:blur(5px) saturate(220%) url(#liquidGlassDistort);
+  -webkit-backdrop-filter:blur(10px) saturate(220%);
+  border:1px solid rgba(255,255,255,.4);
+  box-shadow:
+    0 6px 16px rgba(0,10,25,.4),
+    0 2px 5px rgba(0,10,25,.28),
+    0 0 14px rgba(139,220,255,.18),
+    0 0 0 1px rgba(255,255,255,.25) inset,
+    0 1.5px 0 rgba(255,255,255,.9) inset,
+    0 -4px 6px rgba(0,0,0,.16) inset;
+}
+/* soft rainbow / chromatic rim, like light splitting at a glass edge */
+.liquid-scrollbar-thumb:before {
+  content:'';
+  position:absolute;
+  inset:-1px;
+  border-radius:999px;
+  padding:1px;
+  background:conic-gradient(from var(--rim-angle,0deg),
+    rgba(255,120,140,.5), rgba(255,225,130,.45), rgba(150,255,180,.45),
+    rgba(120,210,255,.55), rgba(190,150,255,.5), rgba(255,120,140,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  filter:blur(1px);
+  opacity:.6;
+  animation:rimSpin 5s linear infinite;
+  pointer-events:none;
+}
+/* liquid highlight: shorter than the thumb, centered, with visible glass
+   margin on both sides — not a full-width streak */
+.liquid-scrollbar-thumb:after {
+  content:'';
+  position:absolute;
+  top:18%;
+  left:50%;
+  width:58%;
+  height:38%;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9) 45%,rgba(255,255,255,.9) 55%,transparent);
+  filter:blur(1px);
+  opacity:.75;
+  pointer-events:none;
+}
+@keyframes rimSpin { to { --rim-angle:360deg; } }
+@property --rim-angle { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+
+.liquid-scrollbar.is-dragging .liquid-scrollbar-thumb {
+  cursor:grabbing;
+  height:36px;
+  box-shadow:
+    0 8px 20px rgba(0,10,25,.48),
+    0 3px 7px rgba(0,10,25,.32),
+    0 0 20px rgba(139,220,255,.28),
+    0 0 0 1.5px rgba(255,255,255,.35) inset,
+    0 1.5px 0 rgba(255,255,255,1) inset,
+    0 -4px 7px rgba(0,0,0,.18) inset;
+}

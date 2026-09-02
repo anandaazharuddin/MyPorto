@@ -1,0 +1,9 @@
+#content, #content-main { background: #eef8ff; }
+.module, .inline-group { border: 1px solid #c7e7f7; border-radius: 14px; overflow: hidden; }
+.module h2, .module caption, .inline-group h2 { background: linear-gradient(135deg, #168dd0, #65d9f6); color: #fff; }
+input, textarea, select, .selector { border: 1px solid #b9dced !important; border-radius: 8px !important; }
+input:focus, textarea:focus, select:focus { border-color: #35aee8 !important; box-shadow: 0 0 0 3px rgba(53,174,232,.15); outline: 0; }
+#header { background: linear-gradient(135deg, #06284b, #0876b6); }
+#branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff; }
+.button, input[type=submit], input[type=button], .submit-row input { background: #168dd0; border-radius: 8px; }
+.button:hover, input[type=submit]:hover { background: #075985; }

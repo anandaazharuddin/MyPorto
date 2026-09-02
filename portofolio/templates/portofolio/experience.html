@@ -1,0 +1,12 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Experience | {% if profile %}{{ profile.name }}{% endif %}</title><link rel="stylesheet" href="{% static 'css/liquid-glass.css' %}"></head>
+<body>
+<div class="bg-particles"><i></i><i></i><i></i><i></i><i></i></div>
+<nav class="glass-nav liquid-glass"><a class="brand" href="{% url 'portofolio:home' %}">portfolio<span>.</span></a><div class="nav-links"><a href="{% url 'portofolio:home' %}">Home</a><a href="{% url 'portofolio:profile' %}">Profile</a><a href="{% url 'portofolio:experience' %}">Experience</a><a href="{% url 'portofolio:home' %}#contact">Contact</a></div></nav>
+<main class="inner-page page-section"><header class="section-heading reveal visible"><p class="eyebrow">THE JOURNEY SO FAR</p><h1>Experience <em>& growth.</em></h1><p>Roles, collaborations, and education gathered along the way.</p></header>
+<div class="experience-list">{% for experience in experiences %}<article class="experience-card liquid-glass reveal visible">{% if experience.gallery.all %}<div class="experience-gallery">{% for item in experience.gallery.all %}<figure><img src="{{ item.image.url }}" alt="{{ item.description|default:experience.company }}"><figcaption>{{ item.description }}</figcaption></figure>{% endfor %}</div>{% endif %}<div class="experience-card-copy"><p class="eyebrow">{{ experience.start_date|date:'Y' }} — {% if experience.is_current %}PRESENT{% else %}{{ experience.end_date|date:'Y' }}{% endif %}</p><h2>{{ experience.role }}</h2><strong>{{ experience.company }}</strong><p>{{ experience.description }}</p></div></article>{% empty %}<p class="empty-state liquid-glass">Add experience from the admin panel.</p>{% endfor %}</div>
+<section class="education-page-block"><h2 class="subsection-title">Education</h2>{% for education in educations %}<article class="profile-item liquid-glass"><div><b>{{ education.degree }}</b><strong>{{ education.institution }}</strong><small>{{ education.field }} · {{ education.year }}{% if education.score %} · Score: {{ education.score }}{% endif %}</small></div></article>{% empty %}<p class="muted-note">Add education from the admin panel.</p>{% endfor %}</section>
+</main><footer>© {% now 'Y' %} {% if profile %}{{ profile.name }}{% endif %}</footer>
+</body></html>
