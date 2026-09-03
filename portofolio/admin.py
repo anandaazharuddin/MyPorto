@@ -4,6 +4,19 @@ from .models import (Certification, Education, Experience, ExperienceImage,
                      Profile, ProfileImage, Tag)
 
 
+class RestrictedAdminSite(admin.AdminSite):
+    site_header = 'Portfolio administration'
+    site_title = 'Portfolio administration'
+    index_title = 'Portfolio administration'
+
+    def has_permission(self, request):
+        user = request.user
+        return user.is_active and user.is_staff and user.is_superuser
+
+
+admin_site = RestrictedAdminSite(name='secure_admin')
+
+
 class ProjectImageInline(admin.StackedInline):
     model = ProjectImage
     extra = 1
@@ -26,7 +39,7 @@ class GlassAdmin(admin.ModelAdmin):
     class Media:
         css = {'all': ('css/admin-glass.css',)}
 
-@admin.register(Project)
+@admin.register(Project, site=admin_site)
 class ProjectAdmin(GlassAdmin):
     list_display = ('title', 'is_featured', 'order', 'created_at')
     list_filter = ('is_featured', 'tags')
@@ -34,7 +47,7 @@ class ProjectAdmin(GlassAdmin):
     filter_horizontal = ('tags',)
     inlines = (ProjectImageInline,)
 
-@admin.register(Profile)
+@admin.register(Profile, site=admin_site)
 class ProfileAdmin(GlassAdmin):
     list_display = ('name', 'email')
     inlines = (ProfileImageInline,)
@@ -43,12 +56,12 @@ class ProfileAdmin(GlassAdmin):
         ('Contact & social links', {'fields': ('email', 'github', 'linkedin', 'instagram', 'twitter', 'tiktok')}),
     )
 
-@admin.register(Tag)
+@admin.register(Tag, site=admin_site)
 class TagAdmin(GlassAdmin):
     search_fields = ('name',)
 
 
-@admin.register(Experience)
+@admin.register(Experience, site=admin_site)
 class ExperienceAdmin(GlassAdmin):
     list_display = ('role', 'company', 'start_date', 'end_date', 'is_current')
     list_filter = ('is_current',)
@@ -56,32 +69,32 @@ class ExperienceAdmin(GlassAdmin):
     inlines = (ExperienceImageInline,)
 
 
-@admin.register(Education)
+@admin.register(Education, site=admin_site)
 class EducationAdmin(GlassAdmin):
     list_display = ('institution', 'degree', 'field', 'year', 'score')
     search_fields = ('institution', 'degree', 'field')
 
 
-@admin.register(Certification)
+@admin.register(Certification, site=admin_site)
 class CertificationAdmin(GlassAdmin):
     list_display = ('name', 'issuing_organization', 'issue_date', 'credential_id')
     search_fields = ('name', 'issuing_organization', 'credential_id')
     list_filter = ('issuing_organization',)
 
 
-@admin.register(Language)
+@admin.register(Language, site=admin_site)
 class LanguageAdmin(GlassAdmin):
     list_display = ('name', 'proficiency')
     list_filter = ('proficiency',)
 
 
-@admin.register(Organization)
+@admin.register(Organization, site=admin_site)
 class OrganizationAdmin(GlassAdmin):
     list_display = ('name', 'role', 'start_date', 'end_date')
     search_fields = ('name', 'role', 'description')
 
 
-@admin.register(Message)
+@admin.register(Message, site=admin_site)
 class MessageAdmin(GlassAdmin):
     list_display = ('name', 'email', 'subject', 'created_at', 'is_read')
     list_filter = ('is_read',)
