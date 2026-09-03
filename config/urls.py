@@ -10,7 +10,7 @@ from portofolio.sitemaps import portfolio_sitemaps
 
 def robots_txt(request):
     return HttpResponse(
-        'User-agent: *\nAllow: /\n\nSitemap: https://anandaazharuddin.com/sitemap.xml\n',
+        'User-agent: *\nAllow: /\n\nSitemap: https://anandaazharuddin.site/sitemap.xml\n',
         content_type='text/plain',
     )
 

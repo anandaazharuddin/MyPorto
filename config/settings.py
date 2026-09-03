@@ -33,7 +33,7 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv(
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,.vercel.app,anandaazharuddin.com,www.anandaazharuddin.com',
+    'localhost,127.0.0.1,.vercel.app,anandaazharuddin.site,www.anandaazharuddin.site',
 ).split(',') if host.strip()]
 
 
@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'portofolio.context_processors.site_metadata',
             ],
         },
     },
@@ -143,7 +144,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 1
-SITE_URL = os.getenv('SITE_URL', 'https://anandaazharuddin.com').rstrip('/')
+SITE_URL = os.getenv('SITE_URL', 'https://anandaazharuddin.site').rstrip('/')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    'https://anandaazharuddin.site',
+    'https://www.anandaazharuddin.site',
+]
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
 STORAGES = {
     'default': {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',

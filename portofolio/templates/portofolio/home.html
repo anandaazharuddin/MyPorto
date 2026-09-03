@@ -11,13 +11,14 @@
     <meta property="og:title" content="Ananda Az Haruddin | Software Engineer">
     <meta property="og:description" content="Portfolio website of Ananda Az Haruddin, Software Engineer specializing in Django, Laravel, IoT, Machine Learning, and Web Development.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/preview.png' %}">
+    <link rel="canonical" href="{{ SITE_URL }}{{ request.path }}">
+    <meta property="og:url" content="{{ SITE_URL }}{{ request.path }}">
+    <meta property="og:image" content="{{ SITE_URL }}{% static 'images/preview.png' %}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ananda Az Haruddin | Software Engineer">
     <meta name="twitter:description" content="Portfolio website of Ananda Az Haruddin, Software Engineer specializing in Django, Laravel, IoT, Machine Learning, and Web Development.">
-    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/preview.png' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <meta name="twitter:image" content="{{ SITE_URL }}{% static 'images/preview.png' %}">
+    <link rel="icon" type="image/x-icon" href="{{ SITE_URL }}{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/liquid-glass.css' %}">
 </head>
 <body>
