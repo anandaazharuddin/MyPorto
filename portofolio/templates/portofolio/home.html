@@ -13,11 +13,14 @@
     <meta property="og:type" content="website">
     <link rel="canonical" href="{{ SITE_URL }}{{ request.path }}">
     <meta property="og:url" content="{{ SITE_URL }}{{ request.path }}">
-    <meta property="og:image" content="{{ SITE_URL }}{% static 'images/preview.png' %}">
+    <meta property="og:image" content="{{ SITE_URL }}/static/images/preview.png">
+    <meta property="og:image:secure_url" content="{{ SITE_URL }}/static/images/preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Ananda Az Haruddin portfolio preview">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ananda Az Haruddin | Software Engineer">
     <meta name="twitter:description" content="Portfolio website of Ananda Az Haruddin, Software Engineer specializing in Django, Laravel, IoT, Machine Learning, and Web Development.">
-    <meta name="twitter:image" content="{{ SITE_URL }}{% static 'images/preview.png' %}">
+    <meta name="twitter:image" content="{{ SITE_URL }}/static/images/preview.png">
     <link rel="icon" type="image/x-icon" href="{{ SITE_URL }}{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/liquid-glass.css' %}">
 </head>
