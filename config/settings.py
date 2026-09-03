@@ -61,11 +61,19 @@ INSTALLED_APPS = [
     'portofolio',
 ]
 
-cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET')
-)
+cloudinary_credentials = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+if all(cloudinary_credentials.values()):
+    CLOUDINARY_STORAGE = cloudinary_credentials
+    cloudinary.config(
+        cloud_name=cloudinary_credentials['CLOUD_NAME'],
+        api_key=cloudinary_credentials['API_KEY'],
+        api_secret=cloudinary_credentials['API_SECRET'],
+        secure=True,
+    )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
