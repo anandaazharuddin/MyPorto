@@ -165,9 +165,13 @@ STORAGES = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     'staticfiles': {
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
+STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / 'portofolio' / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
