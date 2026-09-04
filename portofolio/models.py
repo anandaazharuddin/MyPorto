@@ -8,6 +8,17 @@ class Tag(models.Model):
         return self.name
 
 
+class Skill(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()

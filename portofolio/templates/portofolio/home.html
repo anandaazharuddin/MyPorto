@@ -45,6 +45,7 @@
             <p class="eyebrow">WELCOME TO MY SPACE</p>
             <h2 id="welcomeTitle">Ideas made<br><em>beautifully useful.</em></h2>
             <p class="welcome-copy">A curated portfolio of digital work, thoughtful details, and purposeful experiences.</p>
+            {% if profile and profile.bio %}<p class="welcome-about">{{ profile.bio|truncatewords:28 }}</p>{% else %}<p class="welcome-about">I build thoughtful digital products with Python, Django, Laravel, and modern web technologies.</p>{% endif %}
             <a class="glass-btn primary" href="#projects" id="welcomeExplore">Explore portfolio <span>&#8599;</span></a>
         </div>
     </div>
@@ -110,7 +111,9 @@
                 <div class="about-column">
                     <div class="about-bio liquid-glass reveal">
                         {% if profile and profile.bio %}<p>{{ profile.bio|linebreaksbr }}</p>{% else %}<p>Your story starts here. Tell visitors what you care about, how you work, and the kind of problems you love solving.</p>{% endif %}
-                        <div class="skills"><span>Django</span><span>Python</span><span>PostgreSQL</span><span>HTML / CSS</span><span>JavaScript</span><span>Docker</span><span>Git</span></div>
+                        <div class="skills">
+                            {% for skill in skills %}<span>{{ skill.name }}</span>{% empty %}<span>Python</span><span>Django</span><span>PHP</span><span>Laravel</span><span>JavaScript</span><span>HTML &amp; CSS</span><span>MySQL</span><span>Database Management</span><span>REST API</span><span>API Integration</span><span>Backend Development</span><span>Frontend Development</span><span>Full-Stack Development</span><span>Web Development</span><span>Git</span><span>Version Control</span><span>Machine Learning</span><span>Data Science</span><span>Data Analysis</span><span>Data Visualization</span><span>Predictive Modeling</span><span>Problem Solving</span><span>Communication</span><span>Public Speaking</span><span>Teamwork</span>{% endfor %}
+                        </div>
                     </div>
 
                     <div class="meta-list reveal">

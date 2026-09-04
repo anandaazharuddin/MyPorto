@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .forms import ContactForm
 from .models import (Certification, Education, Experience, Language,
                      Organization, Profile, Project, Tag)
+from .models import Skill
 
 
 def home(request):
@@ -30,6 +31,7 @@ def home(request):
         'organizations': Organization.objects.all(),
         'form': form,
         'selected_tag': selected_tag,
+        'skills': Skill.objects.all(),
     })
 
 

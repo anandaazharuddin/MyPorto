@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (Certification, Education, Experience, ExperienceImage,
                      Language, Message, Organization, Project, ProjectImage,
                      Profile, ProfileImage, Tag)
+from .models import Skill
 
 
 class RestrictedAdminSite(admin.AdminSite):
@@ -38,6 +39,15 @@ class ProfileImageInline(admin.StackedInline):
 class GlassAdmin(admin.ModelAdmin):
     class Media:
         css = {'all': ('css/admin-glass.css',)}
+
+
+@admin.register(Skill, site=admin_site)
+class SkillAdmin(GlassAdmin):
+    list_display = ('name', 'order')
+    list_editable = ('order',)
+    search_fields = ('name',)
+    ordering = ('order', 'name')
+
 
 @admin.register(Project, site=admin_site)
 class ProjectAdmin(GlassAdmin):
