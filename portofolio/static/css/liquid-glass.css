@@ -120,14 +120,33 @@
 .project-image { aspect-ratio:16/9; }.project-content h3 { min-height:30px; }.modal-gallery { aspect-ratio:16/9; min-height:0; }.gallery-slide img { object-fit:contain; background:#061a31; }
 @media (max-width:700px) { .inner-page { padding-top:135px; }.experience-card,.profile-page-grid { grid-template-columns:1fr; }.experience-card .experience-gallery { height:230px; }.cursor-glass { display:none; } }
 
-/* Featured projects stay in one row so larger portfolios scroll horizontally. */
-.projects-grid { display:grid; grid-auto-flow:column; grid-auto-columns:calc((100% - 44px) / 3); grid-template-columns:none; overflow-x:auto; overscroll-behavior-inline:contain; padding:4px 4px 16px; scroll-snap-type:x proximity; scrollbar-color:rgba(118,228,247,.55) rgba(255,255,255,.06); scrollbar-width:thin; }
-.projects-grid::-webkit-scrollbar { height:8px; }
-.projects-grid::-webkit-scrollbar-track { background:rgba(255,255,255,.06); border-radius:8px; }
-.projects-grid::-webkit-scrollbar-thumb { background:linear-gradient(90deg,var(--blue),var(--cyan)); border-radius:8px; }
+/* Horizontal collections share the draggable liquid scrollbar below them. */
+.projects-grid { display:grid; grid-auto-flow:column; grid-auto-columns:calc((100% - 44px) / 3); grid-template-columns:none; overflow-x:auto; overscroll-behavior-inline:contain; padding:4px 4px 16px; scroll-snap-type:x proximity; scrollbar-width:none; }
+.projects-grid::-webkit-scrollbar, .social-grid::-webkit-scrollbar { display:none; }
 .projects-grid .project-card { min-width:0; scroll-snap-align:start; }
 @media (max-width:900px) { .projects-grid { grid-auto-columns:calc((100% - 22px) / 2); grid-template-columns:none; } }
 @media (max-width:700px) { .projects-grid { grid-auto-columns:100%; grid-template-columns:none; padding-inline:2px; } }
+
+/* Keep the long-form page connected while preserving the hero's full-height opening. */
+.page-section { padding-block:78px; }
+.hero { padding-top:150px; padding-bottom:70px; }
+.projects-scrollbar-wrap { margin-bottom:0; }
+.experience-landing, .about-section { padding-top:64px; padding-bottom:64px; }
+.social-section { padding-top:62px; padding-bottom:28px; }
+.contact-section { padding-top:62px; padding-bottom:88px; }
+@media (max-width:700px) {
+  .page-section { padding-block:54px; }
+  .hero { min-height:0; padding-top:135px; padding-bottom:58px; }
+  .experience-landing, .about-section, .social-section, .contact-section { padding-block:52px; }
+  .contact-section { padding-bottom:64px; }
+}
+
+.projects-scrollbar-wrap, .social-scrollbar-wrap { margin:6px 4px 0; }
+.projects-scrollbar-wrap .liquid-scrollbar, .social-scrollbar-wrap .liquid-scrollbar { margin-top:0; }
+.social-grid { display:flex; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-inline:contain; scroll-snap-type:x proximity; scrollbar-width:none; }
+.social-grid > .social-tile { flex:0 0 calc((100% - 36px) / 4); scroll-snap-align:start; }
+@media (max-width:900px) { .social-grid > .social-tile { flex-basis:calc((100% - 12px) / 2); } }
+@media (max-width:700px) { .social-grid > .social-tile { flex-basis:85%; } }
 
 .hero { overflow:clip; }
 .hero-portrait { padding:0; }

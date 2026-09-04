@@ -60,6 +60,46 @@
         </section>
         <section id="projects" class="page-section content-section"><div class="section-heading reveal"><p class="eyebrow">SELECTED WORK</p><h2>Featured <em>Projects</em></h2><p>A small selection of things I have shaped from first sketch to final detail.</p></div><div class="filter-tabs liquid-glass reveal">{% for tag in tags %}<a class="{% if selected_tag|lower == tag.name|lower %}active{% endif %}" href="?tag={{ tag.name|urlencode }}">{{ tag.name }}</a>{% endfor %}</div><div class="projects-grid">{% for project in projects %}<article class="project-card liquid-glass reveal" data-project-modal="project-{{ project.id }}" tabindex="0" role="button"><div class="project-image">{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.title }}">{% else %}<span>{{ project.title|first }}</span>{% endif %}<small>0{{ forloop.counter }}</small></div><div class="project-content"><div class="project-meta"><span>PROJECT / {{ project.created_at|date:'Y' }}</span><span>VIEW DETAIL &#8599;</span></div><h3>{{ project.title }}</h3><p>{{ project.description|truncatewords:25 }}</p><div class="project-tags">{% for tag in project.tags.all %}<span>{{ tag.name }}</span>{% endfor %}</div></div></article>{% empty %}<p class="empty-state liquid-glass">Add featured projects from the admin panel to see them here.</p>{% endfor %}</div></section>
         {% for project in projects %}<div class="project-modal" id="project-{{ project.id }}" aria-hidden="true"><div class="project-modal-card liquid-glass" role="dialog" aria-modal="true" aria-labelledby="project-title-{{ project.id }}"><button class="modal-close" type="button" aria-label="Close project details">&times;</button><div class="modal-gallery">{% if project.gallery.all %}{% for item in project.gallery.all %}<figure class="gallery-slide {% if forloop.first %}active{% endif %}"><img src="{{ item.image.url }}" alt="{{ project.title }}"><figcaption>{{ item.description }}</figcaption></figure>{% endfor %}{% elif project.image %}<figure class="gallery-slide active"><img src="{{ project.image.url }}" alt="{{ project.title }}"></figure>{% endif %}<button class="gallery-prev" type="button" aria-label="Previous image">&#8592;</button><button class="gallery-next" type="button" aria-label="Next image">&#8594;</button></div><div class="modal-copy"><p class="eyebrow">PROJECT DETAIL</p><h2 id="project-title-{{ project.id }}">{{ project.title }}</h2><p>{{ project.description }}</p><div class="modal-tags">{% for tag in project.tags.all %}<span>{{ tag.name }}</span>{% endfor %}</div><div class="modal-links">{% if project.url %}<a class="glass-btn primary" href="{{ project.url }}" target="_blank" rel="noreferrer">Live website &#8599;</a>{% endif %}{% if project.github_url %}<a class="glass-btn" href="{{ project.github_url }}" target="_blank" rel="noreferrer">GitHub &#8599;</a>{% endif %}</div></div></div></div>{% endfor %}
+        <div class="projects-scrollbar-wrap">
+            <div class="liquid-scrollbar" data-scrollbar-for="projects-grid" aria-label="Scroll featured projects"><div class="liquid-scrollbar-thumb"></div></div>
+        </div>
+        <section id="experience" class="page-section content-section experience-landing">
+            <div class="section-heading reveal">
+                <p class="eyebrow">THE JOURNEY SO FAR</p>
+                <h2>Experience <em>& growth.</em></h2>
+                <p>Roles, collaborations, and lessons gathered along the way.</p>
+            </div>
+            <div class="experience-list">
+                {% for experience in experiences %}
+                    <article class="experience-card liquid-glass reveal{% if not experience.gallery.all %} no-gallery{% endif %}">
+                        {% if experience.gallery.all %}
+                            <div class="experience-gallery-wrap">
+                                <div class="experience-gallery">
+                                    {% for item in experience.gallery.all %}
+                                        <figure><img src="{{ item.image.url }}" alt="{{ item.description|default:experience.company }}"><figcaption>{{ item.description }}</figcaption></figure>
+                                    {% endfor %}
+                                </div>
+                                {% if experience.gallery.all|length > 1 %}
+                                <div class="liquid-scrollbar" aria-hidden="true"><div class="liquid-scrollbar-thumb"></div></div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div class="experience-card-copy">
+                            <p class="eyebrow">
+                                {% if experience.start_date %}{{ experience.start_date|date:'F Y' }}{% endif %}
+                                {% if experience.start_date and experience.end_date %} — {% endif %}
+                                {% if experience.end_date %}{{ experience.end_date|date:'F Y' }}{% elif experience.is_current %}Present{% endif %}
+                            </p>
+                            <h2>{{ experience.role }}</h2>
+                            <strong>{{ experience.company }}</strong>
+                            <p>{{ experience.description }}</p>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p class="empty-state liquid-glass">Add experience from the admin panel.</p>
+                {% endfor %}
+            </div>
+        </section>
         <section id="about" class="page-section content-section about-section">
             <div class="section-heading reveal about-heading">
                 <p class="eyebrow">A LITTLE ABOUT ME</p>
@@ -130,7 +170,6 @@
                             {% endfor %}
                         </div>
                     </div>
-
                     <div class="organization-block reveal">
                         <h3 class="subsection-title">Organizations</h3>
                         <div class="org-list">
@@ -160,44 +199,6 @@
                 </div>
             </div>
         </section>
-        <section id="experience" class="page-section content-section experience-landing">
-            <div class="section-heading reveal">
-                <p class="eyebrow">THE JOURNEY SO FAR</p>
-                <h2>Experience <em>& growth.</em></h2>
-                <p>Roles, collaborations, and lessons gathered along the way.</p>
-            </div>
-            <div class="experience-list">
-                {% for experience in experiences %}
-                    <article class="experience-card liquid-glass reveal{% if not experience.gallery.all %} no-gallery{% endif %}">
-                        {% if experience.gallery.all %}
-                            <div class="experience-gallery-wrap">
-                                <div class="experience-gallery">
-                                    {% for item in experience.gallery.all %}
-                                        <figure><img src="{{ item.image.url }}" alt="{{ item.description|default:experience.company }}"><figcaption>{{ item.description }}</figcaption></figure>
-                                    {% endfor %}
-                                </div>
-                                {% if experience.gallery.all|length > 1 %}
-                                <div class="liquid-scrollbar" aria-hidden="true"><div class="liquid-scrollbar-thumb"></div></div>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                        <div class="experience-card-copy">
-                            <p class="eyebrow">
-                                {% if experience.start_date %}{{ experience.start_date|date:'F Y' }}{% endif %}
-                                {% if experience.start_date and experience.end_date %} — {% endif %}
-                                {% if experience.end_date %}{{ experience.end_date|date:'F Y' }}{% elif experience.is_current %}Present{% endif %}
-                            </p>
-                            <h2>{{ experience.role }}</h2>
-                            <strong>{{ experience.company }}</strong>
-                            <p>{{ experience.description }}</p>
-                        </div>
-                    </article>
-                {% empty %}
-                    <p class="empty-state liquid-glass">Add experience from the admin panel.</p>
-                {% endfor %}
-            </div>
-        </section>
-
         {% if profile.linkedin or profile.instagram or profile.github or profile.twitter or profile.tiktok %}
         <section id="connect" class="page-section social-section">
             <div class="social-heading reveal">
@@ -213,6 +214,9 @@
                 {% if profile.twitter %}<a class="social-tile liquid-glass reveal" href="{{ profile.twitter }}" target="_blank" rel="noreferrer" aria-label="Open X / Twitter profile"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></span><span><b>X / Twitter</b><small>Thoughts & updates</small></span><i>&#8599;</i></a>{% endif %}
                 {% if profile.tiktok %}<a class="social-tile liquid-glass reveal" href="{{ profile.tiktok }}" target="_blank" rel="noreferrer" aria-label="Open TikTok profile"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3c.4 2.5 1.7 4.1 4 4.4v3.1c-1.5-.1-2.8-.5-4-1.3v6.1a5.7 5.7 0 1 1-5-5.6v3.2a2.5 2.5 0 1 0 1.8 2.4V3H16Z"/></svg></span><span><b>TikTok</b><small>Short form & motion</small></span><i>&#8599;</i></a>{% endif %}
                 <div class="social-select-thumb" id="socialSelectThumb" aria-hidden="true"></div>
+            </div>
+            <div class="social-scrollbar-wrap">
+                <div class="liquid-scrollbar" data-scrollbar-for="social-grid" aria-label="Scroll social links"><div class="liquid-scrollbar-thumb"></div></div>
             </div>
         </section>
         {% endif %}
@@ -353,6 +357,58 @@
         })();
     </script>
 
+    <script>
+        // Shared liquid scrollbar controller for horizontally scrollable sections.
+        document.querySelectorAll('[data-scrollbar-for]').forEach(bar => {
+            const track = document.querySelector('.' + bar.dataset.scrollbarFor);
+            const thumb = bar.querySelector('.liquid-scrollbar-thumb');
+            if (!track || !thumb) return;
+            let dragging = false;
+            let startX = 0;
+            let startScroll = 0;
+
+            const measure = () => {
+                const ratio = Math.min(1, track.clientWidth / track.scrollWidth);
+                thumb.style.width = Math.max(36, (bar.clientWidth - 4) * ratio) + 'px';
+                thumb.style.transform = `translate3d(${track.scrollWidth > track.clientWidth ? (track.scrollLeft / (track.scrollWidth - track.clientWidth)) * Math.max(0, bar.clientWidth - 4 - thumb.offsetWidth) : 0}px,-50%,0)`;
+                bar.style.display = track.scrollWidth > track.clientWidth ? '' : 'none';
+            };
+            const sync = () => {
+                const travel = bar.clientWidth - 4 - thumb.offsetWidth;
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                const x = maxScroll > 0 ? (track.scrollLeft / maxScroll) * Math.max(0, travel) : 0;
+                thumb.style.transform = `translate3d(${x}px,-50%,0)`;
+            };
+            const endDrag = () => { dragging = false; bar.classList.remove('is-dragging'); };
+
+            measure();
+            track.addEventListener('scroll', sync, { passive: true });
+            window.addEventListener('resize', measure);
+            thumb.addEventListener('pointerdown', event => {
+                dragging = true;
+                startX = event.clientX;
+                startScroll = track.scrollLeft;
+                bar.classList.add('is-dragging');
+                thumb.setPointerCapture(event.pointerId);
+            });
+            thumb.addEventListener('pointermove', event => {
+                if (!dragging) return;
+                const travel = Math.max(1, bar.clientWidth - 4 - thumb.offsetWidth);
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                track.scrollLeft = startScroll + (event.clientX - startX) / travel * maxScroll;
+            });
+            thumb.addEventListener('pointerup', endDrag);
+            thumb.addEventListener('pointercancel', endDrag);
+            bar.addEventListener('pointerdown', event => {
+                if (event.target === thumb) return;
+                const rect = bar.getBoundingClientRect();
+                const travel = Math.max(1, bar.clientWidth - 4 - thumb.offsetWidth);
+                const position = Math.max(0, Math.min(travel, event.clientX - rect.left - thumb.offsetWidth / 2));
+                track.scrollTo({ left: position / travel * (track.scrollWidth - track.clientWidth), behavior: 'smooth' });
+            });
+        });
+
+    </script>
     <script>
         // Liquid glass scrollbar for the Experience gallery (horizontal-only,
         // draggable glass blob like an iOS liquid-glass control). Position is
