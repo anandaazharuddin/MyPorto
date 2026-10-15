@@ -1,0 +1,82 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
+<link rel="stylesheet" href="{% static "css/admin-glass.css" %}">
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+{% if has_permission %}
+<div class="dashboard-hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Control panel</p>
+    <h1>Welcome back, {% firstof user.get_short_name user.get_username %}</h1>
+    <p class="lede">Manage your portfolio content &mdash; projects, profile, experience, and inbound messages &mdash; all in one place.</p>
+  </div>
+  <div class="quick-actions">
+    <a class="qa-chip primary" href="{% url 'admin:portofolio_project_add' %}">+ New project</a>
+    <a class="qa-chip" href="{% url 'admin:portofolio_message_changelist' %}">Messages{% if stats.unread %} <span class="badge">{{ stats.unread }}</span>{% endif %}</a>
+    <a class="qa-chip" href="{% url 'admin:portofolio_profile_changelist' %}">Profile</a>
+    <a class="qa-chip" href="{% url 'admin:portofolio_experience_changelist' %}">Experience</a>
+  </div>
+</div>
+
+{% if stats %}
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num">{{ stats.projects }}</span><span class="stat-label">Projects</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.featured }}</span><span class="stat-label">Featured</span></div>
+  <div class="stat-card{% if stats.unread %} alert{% endif %}"><span class="stat-num">{{ stats.unread }}</span><span class="stat-label">Unread messages</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.experiences }}</span><span class="stat-label">Experience</span></div>
+  <div class="stat-card"><span class="stat-num">{{ stats.certifications }}</span><span class="stat-label">Certifications</span></div>
+</div>
+{% endif %}
+{% endif %}
+
+<div id="content-main">
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}

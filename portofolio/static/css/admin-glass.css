@@ -1,9 +1,1236 @@
-#content, #content-main { background: #eef8ff; }
-.module, .inline-group { border: 1px solid #c7e7f7; border-radius: 14px; overflow: hidden; }
-.module h2, .module caption, .inline-group h2 { background: linear-gradient(135deg, #168dd0, #65d9f6); color: #fff; }
-input, textarea, select, .selector { border: 1px solid #b9dced !important; border-radius: 8px !important; }
-input:focus, textarea:focus, select:focus { border-color: #35aee8 !important; box-shadow: 0 0 0 3px rgba(53,174,232,.15); outline: 0; }
-#header { background: linear-gradient(135deg, #06284b, #0876b6); }
-#branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff; }
-.button, input[type=submit], input[type=button], .submit-row input { background: #168dd0; border-radius: 8px; }
-.button:hover, input[type=submit]:hover { background: #075985; }
+/* ==========================================================================
+   Portfolio administration — "Liquid Glass" theme
+   Brand-consistent dark glass design for the Django admin.
+   Loaded via GlassAdmin.Media and in the custom admin templates.
+   ========================================================================== */
+
+/* --- Brand palette (mirrors the public site: liquid-glass.css) ---------- */
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    --primary: #4db8ff;
+    --secondary: #0e3a63;
+    --accent: #8bdcff;
+    --primary-fg: #04182b;
+
+    --body-fg: #eaf6ff;
+    --body-bg: #071a32;
+    --body-quiet-color: #9fc0da;
+    --body-medium-color: #cde7fb;
+    --body-loud-color: #ffffff;
+
+    --header-color: #eaf6ff;
+    --header-branding-color: #8bdcff;
+    --header-bg: rgba(7, 26, 50, 0.72);
+    --header-link-color: #cfeeff;
+
+    --breadcrumbs-fg: #9fc0da;
+    --breadcrumbs-link-fg: #eaf6ff;
+    --breadcrumbs-bg: transparent;
+
+    --link-fg: #6cc9ff;
+    --link-hover-color: #b7f3ff;
+    --link-selected-fg: #8bdcff;
+
+    --hairline-color: rgba(220, 248, 255, 0.12);
+    --border-color: rgba(220, 248, 255, 0.26);
+
+    --error-fg: #ff9c9c;
+
+    --message-success-bg: rgba(52, 211, 153, 0.16);
+    --message-warning-bg: rgba(245, 221, 93, 0.14);
+    --message-error-bg: rgba(255, 123, 123, 0.16);
+
+    --darkened-bg: rgba(255, 255, 255, 0.045);
+    --selected-bg: rgba(77, 184, 255, 0.12);
+    --selected-row: rgba(77, 184, 255, 0.16);
+
+    --button-fg: #04182b;
+    --button-bg: #4db8ff;
+    --button-hover-bg: #8bdcff;
+    --default-button-bg: #4db8ff;
+    --default-button-hover-bg: #8bdcff;
+    --close-button-bg: rgba(220, 248, 255, 0.12);
+    --close-button-hover-bg: rgba(220, 248, 255, 0.24);
+    --delete-button-bg: rgba(255, 123, 123, 0.16);
+    --delete-button-hover-bg: rgba(255, 123, 123, 0.28);
+
+    --object-tools-fg: #cfeeff;
+    --object-tools-bg: rgba(220, 248, 255, 0.08);
+    --object-tools-hover-bg: rgba(77, 184, 255, 0.22);
+
+    /* Local brand helpers */
+    --gl-blue: #4db8ff;
+    --gl-bright: #8bdcff;
+    --gl-cyan: #b7f3ff;
+    --gl-gold: #f5dd5d;
+    --gl-green: #34d399;
+    --gl-red: #ff7b7b;
+    --gl-panel: rgba(255, 255, 255, 0.055);
+    --gl-line: rgba(220, 248, 255, 0.16);
+    --gl-line-strong: rgba(220, 248, 255, 0.3);
+    --gl-muted: #9fc0da;
+    --gl-faint: rgba(235, 250, 255, 0.55);
+    --gl-input-bg: rgba(4, 20, 38, 0.6);
+    --gl-ink: #04182b;
+
+    color-scheme: dark;
+}
+
+/* --- Base / ambient background ------------------------------------------- */
+body {
+    background:
+        radial-gradient(900px 520px at 85% -10%, rgba(77, 184, 255, 0.16), transparent 60%),
+        radial-gradient(720px 440px at -10% 28%, rgba(183, 243, 255, 0.1), transparent 60%),
+        radial-gradient(1100px 640px at 50% 118%, rgba(14, 58, 99, 0.5), transparent 72%),
+        var(--body-bg);
+    background-attachment: fixed;
+}
+
+/* Slim, on-brand scrollbars */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(77, 184, 255, 0.35) transparent;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(77, 184, 255, 0.28);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(77, 184, 255, 0.5);
+    background-clip: content-box;
+}
+
+/* Accessible focus rings */
+a:focus-visible,
+button:focus-visible,
+.summary:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--gl-blue);
+    outline-offset: 2px;
+}
+
+/* The admin is permanently on-brand dark; hide the theme switch. */
+.theme-toggle {
+    display: none;
+}
+
+/* --- Header & branding ---------------------------------------------------- */
+#header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--gl-line);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+#branding h1,
+#site-name {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+#branding h1 a,
+#site-name a {
+    color: transparent;
+    background: linear-gradient(92deg, var(--gl-cyan), var(--gl-blue) 55%, var(--gl-cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-decoration: none;
+}
+#branding h1 a:hover,
+#site-name a:hover {
+    filter: brightness(1.15);
+}
+
+#user-tools {
+    color: var(--gl-muted);
+    font-size: 0.85rem;
+}
+#user-tools a {
+    color: var(--header-link-color);
+}
+#user-tools a:hover {
+    color: #fff;
+}
+#user-tools .theme-toggle + a,
+#user-tools form button {
+    background: var(--close-button-bg);
+    border: 1px solid var(--gl-line);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    color: var(--body-fg);
+    font-size: 0.8rem;
+    transition: background 0.15s;
+}
+#user-tools form button:hover {
+    background: var(--close-button-hover-bg);
+}
+
+/* --- Breadcrumbs ----------------------------------------------------------- */
+.breadcrumbs {
+    background: transparent;
+    border: 0;
+    font-size: 0.8rem;
+    color: var(--gl-muted);
+    padding-top: 0.4rem;
+}
+.breadcrumbs a {
+    color: var(--link-fg);
+}
+.breadcrumbs a:hover {
+    color: #fff;
+}
+
+/* --- Navigation sidebar ---------------------------------------------------- */
+#nav-sidebar {
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(2, 10, 20, 0.35);
+}
+
+.toggle-nav-sidebar {
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--gl-cyan);
+    backdrop-filter: blur(10px);
+}
+.toggle-nav-sidebar:hover {
+    background: rgba(77, 184, 255, 0.16);
+}
+
+#nav-filter {
+    width: 100%;
+    background: var(--gl-input-bg);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--body-fg);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+#nav-filter::placeholder {
+    color: var(--gl-faint);
+}
+#nav-filter:focus {
+    border-color: var(--gl-blue);
+    box-shadow: 0 0 0 3px rgba(77, 184, 255, 0.22);
+    outline: none;
+}
+
+#nav-sidebar .module {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 10px;
+    padding: 0.25rem 0.4rem;
+}
+#nav-sidebar .module:hover {
+    background: rgba(77, 184, 255, 0.05);
+}
+#nav-sidebar .module.current-app {
+    background: rgba(77, 184, 255, 0.09);
+}
+#nav-sidebar .module caption,
+#nav-sidebar .module h2 {
+    background: none;
+    color: var(--gl-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 0.5rem 0.45rem 0.25rem;
+    text-align: left;
+}
+#nav-sidebar th,
+#nav-sidebar td {
+    padding: 0.15rem 0.45rem;
+}
+#nav-sidebar th a {
+    display: block;
+    padding: 0.4rem 0.55rem;
+    border-radius: 8px;
+    color: var(--body-medium-color);
+    font-weight: 500;
+    transition: background 0.12s, color 0.12s;
+}
+#nav-sidebar th a:hover {
+    background: rgba(77, 184, 255, 0.12);
+    color: #fff;
+}
+#nav-sidebar .current-model th a {
+    background: rgba(77, 184, 255, 0.18);
+    color: var(--gl-cyan);
+    font-weight: 600;
+}
+#nav-sidebar .addlink {
+    display: none;
+}
+
+/* --- Content area ------------------------------------------------------------ */
+#content {
+    background: transparent;
+}
+
+#content h1 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #fff;
+}
+#content h2 {
+    color: var(--gl-muted);
+    font-weight: 500;
+}
+
+/* --- Glass cards (modules, inlines, panels) --------------------------------- */
+.module,
+.inline-group {
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(2, 10, 20, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    overflow: hidden;
+}
+
+.module h2,
+.inline-group h2 {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 1.05rem 1.25rem 0.5rem;
+    color: var(--gl-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+/* Collapsible fieldsets: make the <summary> the clickable eyebrow */
+.module summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.05rem 1.25rem 0.5rem;
+    user-select: none;
+}
+.module summary::-webkit-details-marker {
+    display: none;
+}
+.module summary .fieldset-heading,
+.module summary h2 {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+.module details:not([open]) summary::after {
+    content: " \2195";
+    color: var(--gl-faint);
+}
+.module details[open] summary::after {
+    content: " \2193";
+    color: var(--gl-faint);
+}
+.module .description {
+    color: var(--gl-muted);
+    padding: 0 1.25rem 0.6rem;
+    font-size: 0.82rem;
+}
+
+/* App list on the dashboard: app name as a gradient chip */
+#content-main .module caption,
+.module caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0;
+}
+#content-main .module caption a.section,
+.module caption a.section {
+    display: inline-block;
+    margin: 1rem 1.25rem 0.35rem;
+    padding: 0.32rem 0.95rem;
+    border-radius: 999px;
+    background: linear-gradient(92deg, rgba(77, 184, 255, 0.24), rgba(183, 243, 255, 0.12));
+    border: 1px solid rgba(77, 184, 255, 0.38);
+    color: #cfeeff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+#content-main .module caption a.section:hover {
+    border-color: var(--gl-blue);
+    color: #fff;
+}
+
+/* --- Result tables (change lists) -------------------------------------------- */
+#result_list {
+    border: 0;
+}
+#result_list thead th {
+    background: rgba(77, 184, 255, 0.08);
+    color: var(--gl-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.68rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--gl-line);
+    padding: 0.72rem 0.9rem;
+}
+#result_list tbody th,
+#result_list tbody td {
+    background: transparent;
+    border-top: 1px solid rgba(220, 248, 255, 0.07);
+    padding: 0.72rem 0.9rem;
+    color: var(--body-fg);
+}
+#result_list tbody tr:hover th,
+#result_list tbody tr:hover td {
+    background: rgba(77, 184, 255, 0.06);
+}
+#result_list tbody tr.selected th,
+#result_list tbody tr.selected td {
+    background: var(--selected-row);
+}
+#result_list .column-action {
+    width: 1.5em;
+}
+
+/* Dashboard app-list tables */
+#content-main .module table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#content-main .module th,
+#content-main .module td {
+    padding: 0.55rem 1rem;
+    border-top: 1px solid rgba(220, 248, 255, 0.07);
+    font-size: 0.88rem;
+}
+#content-main .module th a {
+    color: var(--body-fg);
+    font-weight: 600;
+}
+#content-main .module th a:hover {
+    color: #fff;
+}
+#content-main .module td {
+    font-size: 0.78rem;
+    text-align: right;
+}
+#content-main .module td a {
+    color: var(--link-fg);
+    font-weight: 500;
+}
+#content-main .module td a:hover {
+    color: var(--gl-cyan);
+}
+
+/* Small list links (Add / Change / View) as chips */
+.changelink,
+.addlink,
+.viewlink,
+.historylink {
+    display: inline-block;
+    padding: 0.28rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(220, 248, 255, 0.07);
+    border: 1px solid var(--gl-line);
+    color: #cfeeff !important;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+.changelink:hover,
+.addlink:hover,
+.viewlink:hover,
+.historylink:hover {
+    background: rgba(77, 184, 255, 0.18);
+    border-color: rgba(77, 184, 255, 0.5);
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Object tools (History / View on site / Add X) */
+ul.object-tools {
+    margin-bottom: 1rem;
+    padding: 0;
+}
+ul.object-tools li {
+    margin: 0 0.5rem 0 0;
+}
+ul.object-tools li a {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: var(--object-tools-bg);
+    border: 1px solid var(--gl-line);
+    color: var(--object-tools-fg);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.12s, border-color 0.12s;
+}
+ul.object-tools li a:hover {
+    background: var(--object-tools-hover-bg);
+    border-color: rgba(77, 184, 255, 0.55);
+    color: #fff;
+}
+ul.object-tools li a.viewsitelink {
+    border-color: rgba(183, 243, 255, 0.45);
+    color: var(--gl-cyan);
+}
+
+/* --- Search, actions, date hierarchy, filters -------------------------------- */
+#changelist-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 1.25rem 0.25rem;
+}
+#changelist-search input[type=text] {
+    flex: 1;
+    max-width: 340px;
+    background: var(--gl-input-bg);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--body-fg);
+    padding: 0.5rem 0.8rem;
+}
+#changelist-search input[type=text]::placeholder {
+    color: var(--gl-faint);
+}
+#changelist-search input[type=text]:focus {
+    border-color: var(--gl-blue);
+    box-shadow: 0 0 0 3px rgba(77, 184, 255, 0.22);
+    outline: none;
+}
+#changelist-search img {
+    filter: invert(0.75);
+}
+
+.actions {
+    padding: 0.85rem 1.25rem;
+}
+.actions label {
+    color: var(--gl-muted);
+    font-size: 0.8rem;
+}
+
+/* Date hierarchy (Django 5.x renders it as nav.toplinks) */
+#changelist nav.toplinks {
+    margin: 0.9rem 1.25rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+}
+#changelist nav.toplinks a {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    background: rgba(220, 248, 255, 0.07);
+    border: 1px solid var(--gl-line);
+    border-radius: 999px;
+    color: var(--body-medium-color);
+    font-size: 0.8rem;
+}
+#changelist nav.toplinks a:hover {
+    border-color: rgba(77, 184, 255, 0.5);
+    color: #fff;
+}
+#changelist nav.toplinks a.date-back {
+    background: none;
+    border: 0;
+    color: var(--link-fg);
+    font-weight: 600;
+    padding: 0.3rem 0.2rem;
+}
+
+#changelist-search input[type=submit] {
+    background: rgba(220, 248, 255, 0.08);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--body-fg);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+}
+#changelist-search input[type=submit]:hover {
+    background: rgba(77, 184, 255, 0.18);
+    border-color: rgba(77, 184, 255, 0.5);
+}
+
+/* Admin yes/no icons are light-on-dark here */
+.field-is_featured img,
+.field-is_read img,
+.field-is_current img {
+    filter: invert(0.7);
+}
+
+#changelist-filter {
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(2, 10, 20, 0.3);
+    padding: 1rem 1.1rem 1.2rem;
+}
+#changelist-filter-header {
+    background: none;
+    padding: 0 0.25rem 0.5rem;
+    color: var(--gl-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+#changelist-filter h3 {
+    color: var(--body-medium-color);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin: 1rem 0 0.3rem;
+}
+#changelist-filter ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#changelist-filter li a {
+    display: block;
+    padding: 0.4rem 0.65rem;
+    border-radius: 8px;
+    color: var(--gl-muted);
+    font-size: 0.82rem;
+}
+#changelist-filter li a:hover {
+    background: rgba(77, 184, 255, 0.1);
+    color: #fff;
+}
+#changelist-filter li.selected a {
+    background: rgba(77, 184, 255, 0.18);
+    color: #eaf6ff;
+    font-weight: 600;
+}
+#changelist-filter-extra-actions a {
+    color: var(--gl-red) !important;
+    font-size: 0.78rem;
+}
+
+/* --- Pagination ---------------------------------------------------------------- */
+.paginator {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.8rem;
+    color: var(--gl-muted);
+}
+.paginator a,
+.paginator span.this-current {
+    display: inline-block;
+    padding: 0.22rem 0.65rem;
+    margin: 0 0.12rem;
+    border-radius: 8px;
+    background: rgba(220, 248, 255, 0.07);
+    border: 1px solid var(--gl-line);
+    color: var(--body-medium-color);
+}
+.paginator a:hover {
+    border-color: rgba(77, 184, 255, 0.5);
+    color: #fff;
+}
+.paginator span.this-current {
+    background: linear-gradient(135deg, var(--gl-blue), var(--gl-bright));
+    border-color: transparent;
+    color: var(--gl-ink);
+    font-weight: 700;
+}
+
+/* --- Forms ---------------------------------------------------------------------- */
+label {
+    color: var(--body-medium-color);
+    font-weight: 600;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+input[type=date],
+input[type=datetime-local],
+input[type=month],
+input[type=search],
+select,
+textarea {
+    background: var(--gl-input-bg);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--body-fg);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+input::placeholder,
+textarea::placeholder {
+    color: var(--gl-faint);
+}
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--gl-blue);
+    box-shadow: 0 0 0 3px rgba(77, 184, 255, 0.22);
+    outline: none;
+}
+input[type=checkbox],
+input[type=radio] {
+    accent-color: var(--gl-blue);
+    width: 1rem;
+    height: 1rem;
+}
+select option {
+    background: #0a2038;
+    color: var(--body-fg);
+}
+
+.form-row {
+    padding: 0.65rem 0;
+}
+.form-row label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gl-muted);
+}
+.form-row .readonly {
+    color: var(--body-fg);
+    background: var(--darkened-bg);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    padding: 0.55rem 0.75rem;
+}
+
+.help {
+    color: var(--gl-faint);
+    font-size: 0.78rem;
+    margin-top: 0.3rem;
+}
+.help-tooltip {
+    filter: invert(0.75);
+}
+.checkbox-row label {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.9rem;
+    color: var(--body-fg);
+    font-weight: 500;
+    display: inline;
+    margin-left: 0.4rem;
+}
+
+/* Errors */
+.errors,
+.errornote,
+ul.errorlist {
+    color: var(--gl-red);
+}
+.errornote {
+    background: var(--message-error-bg);
+    border: 1px solid rgba(255, 123, 123, 0.35);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    color: #ffd7d7;
+}
+.form-row.errors input,
+.form-row.errors select,
+.form-row.errors textarea,
+input[aria-invalid=true],
+select[aria-invalid=true] {
+    border-color: var(--gl-red) !important;
+}
+ul.errorlist {
+    list-style: none;
+    margin: 0.3rem 0 0;
+    padding: 0;
+    font-size: 0.8rem;
+}
+
+/* Related-object icons (change/add/delete/view lookups) */
+.related-widget-wrapper-link img,
+.related-lookup img,
+.vDateField ~ img {
+    filter: invert(0.8);
+}
+
+/* --- Buttons & submit row -------------------------------------------------------- */
+.button,
+input[type=button],
+#logout-form button {
+    background: rgba(220, 248, 255, 0.08);
+    border: 1px solid var(--gl-line);
+    border-radius: 10px;
+    color: var(--body-fg);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+.button:hover,
+input[type=button]:hover,
+#logout-form button:hover {
+    background: rgba(77, 184, 255, 0.16);
+    border-color: rgba(77, 184, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.submit-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--gl-line);
+    border-radius: 14px;
+    padding: 0.9rem 1.1rem;
+    margin: 1.3rem 0;
+}
+.submit-row input[type=submit] {
+    background: linear-gradient(135deg, var(--gl-blue), var(--gl-bright));
+    color: var(--gl-ink);
+    font-weight: 700;
+    border: 0;
+    border-radius: 10px;
+    padding: 0.62rem 1.3rem;
+    font-size: 0.88rem;
+    box-shadow: 0 6px 18px rgba(77, 184, 255, 0.25);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
+}
+.submit-row input[type=submit]:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 10px 26px rgba(77, 184, 255, 0.38);
+}
+.submit-row input[type=submit].default {
+    padding: 0.62rem 1.7rem;
+}
+.submit-row a.closelink {
+    color: var(--gl-muted);
+    font-size: 0.85rem;
+}
+.submit-row a.closelink:hover {
+    color: #fff;
+}
+.submit-row a.deletelink {
+    margin-left: auto;
+    background: var(--delete-button-bg);
+    border: 1px solid rgba(255, 123, 123, 0.4);
+    border-radius: 10px;
+    color: #ffb4b4;
+    padding: 0.55rem 1.1rem;
+    font-weight: 600;
+    transition: background 0.12s;
+}
+.submit-row a.deletelink:hover {
+    background: var(--delete-button-hover-bg);
+    color: #ffd7d7;
+}
+
+/* Delete confirmation page */
+.delete-form .submit-row input[type=submit] {
+    background: linear-gradient(135deg, #ff7b7b, #ff9c9c);
+    color: #3a0808;
+    box-shadow: 0 6px 18px rgba(255, 123, 123, 0.25);
+}
+
+/* --- Messages (django messages framework) ---------------------------------------- */
+.messagelist {
+    margin: 1rem 0;
+    padding: 0;
+}
+.messagelist li {
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.messagelist li.success {
+    background: var(--message-success-bg);
+    border-color: rgba(52, 211, 153, 0.35);
+    color: #c9ffe9;
+}
+.messagelist li.warning {
+    background: var(--message-warning-bg);
+    border-color: rgba(245, 221, 93, 0.4);
+    color: #fff3c4;
+}
+.messagelist li.error {
+    background: var(--message-error-bg);
+    border-color: rgba(255, 123, 123, 0.4);
+    color: #ffd7d7;
+}
+
+/* --- Inlines (image galleries, etc.) ----------------------------------------------- */
+.inline-group {
+    margin-bottom: 1.3rem;
+}
+.inline-related {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--gl-line);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    margin-top: 0.8rem;
+    position: relative;
+}
+.inline-related h3 {
+    margin: 0 0 0.7rem;
+    color: var(--body-medium-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.inline-deletelink {
+    color: var(--gl-red) !important;
+    font-size: 0.8rem;
+}
+.inline-deletelink:hover {
+    color: #ff6b6b !important;
+}
+.add-inline,
+.add-existing a {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.45rem 1rem;
+    border-radius: 10px;
+    background: rgba(77, 184, 255, 0.12);
+    border: 1px solid rgba(77, 184, 255, 0.4);
+    color: var(--gl-bright);
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background 0.12s;
+}
+.add-inline:hover,
+.add-existing a:hover {
+    background: rgba(77, 184, 255, 0.22);
+}
+
+/* --- Dashboard (admin index) --------------------------------------------------------- */
+.dashboard-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: linear-gradient(120deg, rgba(77, 184, 255, 0.18), rgba(183, 243, 255, 0.05) 55%, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--gl-line-strong);
+    border-radius: 20px;
+    padding: 1.7rem 1.9rem;
+    margin-bottom: 1.1rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 14px 40px rgba(2, 10, 20, 0.4);
+}
+.dashboard-hero .eyebrow {
+    margin: 0 0 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--gl-cyan);
+}
+.dashboard-hero h1 {
+    margin: 0 0 0.4rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+}
+.dashboard-hero .lede {
+    margin: 0;
+    max-width: 48ch;
+    color: var(--gl-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex-shrink: 0;
+}
+.qa-chip {
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0.55rem 1.2rem;
+    border-radius: 12px;
+    background: rgba(220, 248, 255, 0.07);
+    border: 1px solid var(--gl-line);
+    color: #eaf6ff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.12s, border-color 0.12s, transform 0.12s;
+}
+.qa-chip:hover {
+    background: rgba(77, 184, 255, 0.15);
+    border-color: rgba(77, 184, 255, 0.55);
+    color: #fff;
+    transform: translateY(-1px);
+}
+.qa-chip.primary {
+    background: linear-gradient(135deg, var(--gl-blue), var(--gl-bright));
+    border-color: transparent;
+    color: var(--gl-ink);
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(77, 184, 255, 0.28);
+}
+.qa-chip .badge {
+    display: inline-block;
+    min-width: 1.3em;
+    margin-left: 0.4em;
+    padding: 0.05em 0.45em;
+    border-radius: 999px;
+    background: var(--gl-gold);
+    color: #3a2c00;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+}
+.stat-card {
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(2, 10, 20, 0.3);
+}
+.stat-card .stat-num {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(92deg, var(--gl-bright), var(--gl-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.stat-card .stat-label {
+    color: var(--gl-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.stat-card.alert {
+    border-color: rgba(245, 221, 93, 0.45);
+    background: linear-gradient(120deg, rgba(245, 221, 93, 0.14), rgba(255, 255, 255, 0.04));
+}
+.stat-card.alert .stat-num {
+    background: linear-gradient(92deg, #ffe08a, var(--gl-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* Recent actions module */
+#recent-actions-module h3 {
+    color: var(--body-medium-color);
+    font-size: 0.82rem;
+    margin: 0.8rem 1.25rem 0.3rem;
+}
+#recent-actions-module ul.actionlist {
+    list-style: none;
+    margin: 0;
+    padding: 0 1.25rem 0.5rem;
+}
+#recent-actions-module ul.actionlist li {
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(220, 248, 255, 0.07);
+    font-size: 0.85rem;
+}
+#recent-actions-module ul.actionlist li::before {
+    content: "";
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background: var(--gl-faint);
+    vertical-align: baseline;
+}
+#recent-actions-module ul.actionlist li.addlink::before {
+    background: var(--gl-green);
+}
+#recent-actions-module ul.actionlist li.deletelink::before {
+    background: var(--gl-red);
+}
+#recent-actions-module .mini.quiet {
+    color: var(--gl-faint);
+    font-size: 0.72rem;
+}
+#recent-actions-module p {
+    padding: 0.4rem 1.25rem 0.9rem;
+    color: var(--gl-muted);
+}
+
+/* --- Login page ----------------------------------------------------------------------- */
+body.login #container {
+    min-width: 0;
+    width: auto;
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+body.login #header,
+body.login #footer {
+    display: none;
+}
+body.login #content {
+    margin: 10vh auto 4rem;
+    background: var(--gl-panel);
+    border: 1px solid var(--gl-line-strong);
+    border-radius: 22px;
+    padding: 2.3rem 2.1rem;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 24px 70px rgba(2, 10, 20, 0.55);
+}
+body.login #content-main {
+    width: 100%;
+}
+.login-brand {
+    text-align: center;
+    margin-bottom: 1.7rem;
+}
+.login-logo {
+    display: block;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(92deg, var(--gl-cyan), var(--gl-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.login-logo .login-dot {
+    color: var(--gl-gold);
+    -webkit-text-fill-color: var(--gl-gold);
+}
+.login-tag {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--gl-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+}
+body.login .form-row {
+    margin-bottom: 1rem;
+}
+body.login input[type=text],
+body.login input[type=password] {
+    width: 100%;
+    box-sizing: border-box;
+}
+body.login .submit-row {
+    margin-top: 1.4rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    justify-content: center;
+}
+body.login .submit-row input[type=submit] {
+    width: 100%;
+    padding: 0.75rem 1.3rem;
+    font-size: 0.95rem;
+}
+body.login .password-reset-link {
+    text-align: center;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+}
+
+/* --- Footer -------------------------------------------------------------------------------- */
+#footer {
+    text-align: center;
+    color: var(--gl-faint);
+    font-size: 0.72rem;
+    padding: 1.2rem 1rem 1.6rem;
+}
+
+/* --- Misc details ---------------------------------------------------------------------------- */
+/* Featured star in change lists */
+.star {
+    color: var(--gl-gold);
+    margin-right: 0.35rem;
+}
+.star-off {
+    color: rgba(235, 250, 255, 0.3);
+}
+
+img.vSmall,
+.form-row img {
+    border-radius: 8px;
+    border: 1px solid var(--gl-line);
+}
+
+/* Popups (add-related modals) */
+body.popup #container {
+    min-width: 0;
+    padding: 0 14px;
+}
+body.popup .submit-row {
+    justify-content: center;
+}
+
+/* --- Small screens ---------------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .dashboard-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .quick-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .qa-chip {
+        flex: 1;
+        min-width: 8rem;
+    }
+    .submit-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .submit-row input[type=submit] {
+        text-align: center;
+    }
+    .submit-row a.deletelink {
+        margin-left: 0;
+        text-align: center;
+    }
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
