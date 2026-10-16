@@ -1,0 +1,15 @@
+{% load i18n %}
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="{% translate 'Toggle navigation' %}"></button>
+<nav class="sticky" id="nav-sidebar" aria-label="{% translate 'Sidebar' %}">
+  <div class="nav-brand">
+    <a href="{% url 'admin:index' %}" class="nav-brand-logo">portfolio<span class="nav-brand-dot">.</span></a>
+    <span class="nav-brand-sub">Admin</span>
+  </div>
+  <div class="nav-filter-wrap">
+    <svg class="nav-filter-icon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="search" id="nav-filter"
+           placeholder="{% translate 'Filter menu…' %}"
+           aria-label="{% translate 'Filter navigation items' %}">
+  </div>
+  {% include 'admin/app_list.html' with app_list=available_apps show_changelinks=False %}
+</nav>

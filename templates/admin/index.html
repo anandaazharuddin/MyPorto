@@ -34,11 +34,26 @@
 
 {% if stats %}
 <div class="stat-grid">
-  <div class="stat-card"><span class="stat-num">{{ stats.projects }}</span><span class="stat-label">Projects</span></div>
-  <div class="stat-card"><span class="stat-num">{{ stats.featured }}</span><span class="stat-label">Featured</span></div>
-  <div class="stat-card{% if stats.unread %} alert{% endif %}"><span class="stat-num">{{ stats.unread }}</span><span class="stat-label">Unread messages</span></div>
-  <div class="stat-card"><span class="stat-num">{{ stats.experiences }}</span><span class="stat-label">Experience</span></div>
-  <div class="stat-card"><span class="stat-num">{{ stats.certifications }}</span><span class="stat-label">Certifications</span></div>
+  <div class="stat-card">
+    <div class="stat-icon">{% include "admin/includes/model_icon.html" with model_name="project" only %}</div>
+    <div><span class="stat-num">{{ stats.projects }}</span><span class="stat-label">Projects</span></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon accent">{% include "admin/includes/model_icon.html" with model_name="skill" only %}</div>
+    <div><span class="stat-num">{{ stats.featured }}</span><span class="stat-label">Featured</span></div>
+  </div>
+  <div class="stat-card{% if stats.unread %} alert{% endif %}">
+    <div class="stat-icon">{% include "admin/includes/model_icon.html" with model_name="message" only %}</div>
+    <div><span class="stat-num">{{ stats.unread }}</span><span class="stat-label">Unread messages</span></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">{% include "admin/includes/model_icon.html" with model_name="experience" only %}</div>
+    <div><span class="stat-num">{{ stats.experiences }}</span><span class="stat-label">Experience</span></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">{% include "admin/includes/model_icon.html" with model_name="certification" only %}</div>
+    <div><span class="stat-num">{{ stats.certifications }}</span><span class="stat-label">Certifications</span></div>
+  </div>
 </div>
 {% endif %}
 {% endif %}
